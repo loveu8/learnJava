@@ -1,4 +1,4 @@
-package me.Class2;
+package Class2;
 
 public class Class2 {
 
