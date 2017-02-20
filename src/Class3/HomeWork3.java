@@ -203,12 +203,12 @@ class Q3_4 {
       avgMath = avgMath + students[index].math;
       avgChinese = avgChinese + students[index].chinese;
       avgEnglish = avgEnglish + students[index].english;
-      avgScore[index] = (students[index].math + students[index].chinese + students[index].english) / students.length;
+      avgScore[index] = (students[index].math + students[index].chinese + students[index].english) / 3;
       System.out.printf("學生:"+students[index].name + " , 平均分數:%.2f \n" , avgScore[index]);
     }
-    System.out.printf("數學平均:%.2f\n" , avgMath / students.length);
-    System.out.printf("中文平均:%.2f\n" , avgChinese / students.length);
-    System.out.printf("英文平均:%.2f\n" , avgEnglish / students.length);
+    System.out.printf("數學平均:%.2f\n" , avgMath / 3);
+    System.out.printf("中文平均:%.2f\n" , avgChinese / 3);
+    System.out.printf("英文平均:%.2f\n" , avgEnglish / 3);
     
   }
   
