@@ -5,9 +5,21 @@ import java.util.Scanner;
 
 public class Class4 {
   public static void main(String[] args) {
-    new MyRandom().random(100);
+
   }
 }
+
+// 交換
+class MySwapNum{
+  public void swapNumber(int headNum , int footNum){
+    System.out.println("交換前 : " + headNum + " , " + footNum);
+    int temp = headNum;
+    headNum = footNum;
+    footNum = temp;
+    System.out.println("交換後 : " + headNum + " , " + footNum);
+  }
+}
+
 
 // 三元運算
 class MyOtherIfElse {
