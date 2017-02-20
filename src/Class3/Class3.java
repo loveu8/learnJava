@@ -23,6 +23,9 @@ public class Class3 {
     System.out.println("while迴圈");
     MyWhile myWhile = new MyWhile();
     myWhile.testWhile();
+    System.out.println("doWhile迴圈");
+    MyDoWhile doWhile = new MyDoWhile();
+    doWhile.testDoWhile();
   }
 }
 
@@ -104,14 +107,63 @@ class MyWhile {
       }
       i++; //=> i = i + 1;
     }
+    System.out.println();
   }
 }
 
 class MyDoWhile {
+  public void testDoWhile(){
+    System.out.println("題目 :　1*1=1 , 1*2=2 ...... 1*9=9");
+    int i = 1 ;
+    do{
+      System.out.print("1*"+ i +"="+1*i);
+      if(i<9){
+        System.out.print(",");
+      }
+      i++; //=> i = i + 1;
+    } while(i<10);
+    System.out.println();
+  }
+  
+  // 練習 : 請用 do while 寫九九乘法表
+  
   
 }
 
 class MyArray {
   int[] oneArray;
   int[][] twoArray;
+  
+  String[] oneStringArray;
+  String[][] twoStringArray;
+  
+  public void initOneArray(int size){
+    oneArray = new int[size];
+    for (int i = 0; i < size; i++) {
+      oneArray[i] = i;
+    }
+  }
+  
+  // 練習1 : 請使用雙層迴圈，把1~9放到二維陣列
+  
+  
+  // 練習2 : 二維陣列初始完畢，請陣列內的數字
+  // 印出九九乘法表
+  
+  
+  // 花色
+  public void initOneStringArray(){
+    oneStringArray = new String [4];
+    oneStringArray[0] = "梅花";
+    oneStringArray[1] = "方塊";
+    oneStringArray[2] = "愛心";
+    oneStringArray[3] = "黑桃";
+  }
+  
+  // 練習3 : 請練習發初始二維陣列，放入52張牌
+  
+  
+  
+  
+  
 }
