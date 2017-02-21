@@ -170,11 +170,12 @@ class Q3_3 {
   
   // 西元年分是400的倍數)或(西元年分是4的倍數但不是100的倍數)
   public boolean isLeap(int year){
-    if((year % 400 == 0) || (year % 4 == 0 && ! (year % 100 ==0))){
-      return true;
-    } else {
-      return false;
-    }
+//    if((year % 400 == 0) || (year % 4 == 0 && ! (year % 100 ==0))){
+//      return true;
+//    } else {
+//      return false;
+//    }
+    return (year % 400 == 0) || (year % 4 == 0 && !(year % 100 ==0));
   }
   
   
@@ -252,7 +253,7 @@ class Student{
  * 3-5.有一組52張撲克牌(不含鬼牌)，請幫我進行發牌動作，並且發給四個人(不重覆)。 
  */
 class Q3_5 {
-  
+
   /**
    * 預設花色，小到大排序
    */
