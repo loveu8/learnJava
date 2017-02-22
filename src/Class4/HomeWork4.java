@@ -219,6 +219,11 @@ class Q4_3 {
     } // end yearArray
   } // end printYearOfDay
   
+  // 找出那一年，每月有幾天
+  public int[] findMonthOfDay(int year){
+    return isLeap(year) ? leapYear : normalYear;
+  } // end findMonthOfDay
+  
   // 印出每一年的月份的天數，不使用預設陣列
   private void printYearOfDayTypeTwo(int[] yearArray){
     for(int index = 0 ; index < yearArray.length ; index++){
@@ -238,13 +243,8 @@ class Q4_3 {
     } // end yearArray
   } // end printYearOfDay
   
-    
-  // 找出那一年，每月有幾天
-  public int[] findMonthOfDay(int year){
-    return isLeap(year) ? leapYear : normalYear;
-  } // end findMonthOfDay
   
-  // 0~11 => 1~12月天氣
+  // 0~11 => 1~12月天數
   public int[] findMonthOfDayTwo(int year){
     int[] monthsOfDay = new int[12];
     for(int month = 0 ; month < monthsOfDay.length ; month++){
