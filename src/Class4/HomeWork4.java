@@ -11,7 +11,9 @@ public class HomeWork4 {
     System.out.println("-----");
     new Q4_2().compute();
     System.out.println("-----");
-    new Q4_3().printYearOfDay(2007,2017);
+    new Q4_3().printYearOfDayTypeOne(2011,2017);
+    System.out.println("-----");
+    new Q4_3().printYearOfDayTypeTwo(2011,2017);
     System.out.println("-----");
     new Q4_4().guessNumber(100);
   }
@@ -103,14 +105,22 @@ class Q4_2 {
       System.out.println("請輸入兩個數字，並選擇要執行的加減乘除動作，會幫您進行運算");
       Scanner scanner = new Scanner(System.in);
       System.out.print("請輸入第一個數字:");
+      if(!scanner.hasNextInt()){
+        System.out.println("輸入錯誤，重新開始\n");
+        continue;
+      }
       numberOne = Double.parseDouble(scanner.next());
       System.out.println("第一個數字:"+numberOne);
       System.out.print("\n請輸入第二個數字:");
+      if(!scanner.hasNextInt()){
+        System.out.println("輸入錯誤，重新開始\n");
+        continue;
+      }
       numberTwo = Double.parseDouble(scanner.next());
       System.out.println("第二個數字:"+numberTwo);
       System.out.println("\n請輸入要運算的符號 +(加) , -(減) , *(乘法) , /(除)");
       System.out.print("符號:");
-      doMath = scanner.next().toCharArray()[0];
+      doMath = scanner.next().charAt(0);
       System.out.println();
       switch(doMath){
         case '+':
@@ -126,8 +136,8 @@ class Q4_2 {
           System.out.println("您選了除法 , "+numberOne + "/" + numberTwo + " = " + (numberOne / numberTwo));
           break;
         default:
-          System.out.println("輸入錯誤的符號，請重新開始");
-          break;
+          System.out.println("輸入錯誤的符號，請重新開始\n");
+          continue;
       }
       System.out.println("是否要繼續執行?，若要取消請輸入N。繼續執行按下任意鍵，Enter後繼續。");
       System.out.print("請輸入:");
@@ -164,9 +174,14 @@ class Q4_3 {
   int[] leapYear = {31,29,31,30,31,30,31,31,30,31,30,31};
   String[] chineseMonth = {"1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"};
   
-  public void printYearOfDay(int startYear , int endYear){
+  public void printYearOfDayTypeOne(int startYear , int endYear){
     int[] yearArray = this.initYears(startYear, endYear);
-    this.printYearOfDay(yearArray);
+    this.printYearOfDayTypeOne(yearArray);
+  } // end printYearOfDay
+  
+  public void printYearOfDayTypeTwo(int startYear , int endYear){
+    int[] yearArray = this.initYears(startYear, endYear);
+    this.printYearOfDayTypeTwo(yearArray);
   } // end printYearOfDay
   
   // 送入開始年份與結束年份，產出對應的年份陣列
@@ -185,11 +200,11 @@ class Q4_3 {
     return years;
   } // end initYears
   
-  // 印出每一年的月份的天數
-  private void printYearOfDay(int[] yearArray){
+  // 印出每一年的月份的天數，使用預設陣列
+  private void printYearOfDayTypeOne(int[] yearArray){
     for(int index = 0 ; index < yearArray.length ; index++){
       int[] months = findMonthOfDay(yearArray[index]);
-      System.out.println(+yearArray[index]+"年");
+      System.out.println(yearArray[index]+"年");
       for(int month = 0 ; month< months.length ; month ++){
         System.out.println(chineseMonth[month]);
         for(int day = 1 ; day < months[month]+1; day++){
@@ -203,11 +218,49 @@ class Q4_3 {
       System.out.println();
     } // end yearArray
   } // end printYearOfDay
+  
+  // 印出每一年的月份的天數，不使用預設陣列
+  private void printYearOfDayTypeTwo(int[] yearArray){
+    for(int index = 0 ; index < yearArray.length ; index++){
+      int[] months = findMonthOfDayTwo(yearArray[index]);
+      System.out.println(yearArray[index]+"年");
+      for(int month = 0 ; month< months.length ; month ++){
+        System.out.println((month+1)+ "月");
+        for(int day = 1 ; day < months[month]+1; day++){
+          System.out.print(day);
+          if(day<months[month]){
+            System.out.print(",");
+          }
+        } // end day
+        System.out.println();
+      } // end month
+      System.out.println();
+    } // end yearArray
+  } // end printYearOfDay
+  
     
   // 找出那一年，每月有幾天
   public int[] findMonthOfDay(int year){
     return isLeap(year) ? leapYear : normalYear;
   } // end findMonthOfDay
+  
+  // 0~11 => 1~12月天氣
+  public int[] findMonthOfDayTwo(int year){
+    int[] monthsOfDay = new int[12];
+    for(int month = 0 ; month < monthsOfDay.length ; month++){
+      if(month==0 || month==2 || month==4 || month==6 || month== 7 || month==9 || month==11 ){
+        monthsOfDay[month] = 31;
+        continue;
+      }
+      if(month==1){
+        monthsOfDay[month] = isLeap(year) ? 29 : 28;
+        continue;
+      }
+      monthsOfDay[month] = 30;
+      continue;
+    }
+    return monthsOfDay;
+  }
   
   // 閏年判斷
   public boolean isLeap(int year){
@@ -242,6 +295,11 @@ class Q4_4 {
   
       Scanner scanner = new Scanner(System.in);
       System.out.print("請輸入猜測的數字:");
+      if(!scanner.hasNextInt()){
+        System.out.println("請輸入這範圍內數字!! " + topNumber + "~" + endNumber);
+        System.out.println("----------------------");
+        continue;
+      }
       guessNumber = Integer.parseInt(scanner.next());
       
       // 判斷輸入的數字是否超過範圍，超過範圍，使用者需要重新輸入
@@ -260,6 +318,8 @@ class Q4_4 {
         System.out.println("總共猜測了這些數字 = " + guessNumberStr);
         break;
       }
+      
+      // 沒有結束，繼續串聯下去
       guessNumberStr = guessNumberStr + ",";
       
       // 根據數字，設定範圍數字
@@ -275,7 +335,8 @@ class Q4_4 {
         topNumber = guessNumber;
       }
       
-      System.out.println("已猜測數字 = " + guessNumberStr + " 猜了 " +countGuessTime+ "次");
+      System.out.println("已猜測數字 = " + guessNumberStr);
+      System.out.println("目前我們猜了 " +countGuessTime+ " 次");
       System.out.println("沒有猜中，數字範圍在 " + topNumber + "~" + endNumber);
       System.out.println("----------------------");
     }
