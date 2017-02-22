@@ -3,3 +3,5 @@
 .settings/org.eclipse.jdt.core.prefs
 .gitignore
 bin/*
+/bin/
+org.eclipse.wst.common.project.facet.core.xml
