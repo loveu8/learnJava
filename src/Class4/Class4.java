@@ -41,7 +41,7 @@ class MySwapNum{
  * 條件式(布林值) ? 結果為真對應處理 : 結果為假的對應處理
  * ? 好的左邊是判斷是否成立
  * 分號的左邊，判斷成立時，會執行的內容
- * 分好的右邊，判斷不成立時，會執行的內容
+ * 分號的右邊，判斷不成立時，會執行的內容
  * </pre>
  */
 class MyOtherIfElse {
@@ -138,7 +138,7 @@ class MySwtichCase {
  * Random.nextInt 意旨產生範圍0~?的正整數
  * 若是要從1開始，記得要加1
  * Integer是一個Java內建物件，他直接執行使用的方法
- * 內建Integer.toString，代表把整數轉換成字串
+ * 內建Integer.toString，代表把字串轉換成整數
  * </pre>
  */
 class MyRandom {
