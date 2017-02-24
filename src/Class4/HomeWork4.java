@@ -15,8 +15,9 @@ public class HomeWork4 {
 //    System.out.println("-----");
 //    new Q4_3().printYearOfDayTypeTwo(2011,2017);
 //    System.out.println("-----");
-    new Q4_4().guessNumber(100);
-    System.out.println("-----");
+//    new Q4_4().guessNumber(100);
+//    System.out.println("-----");
+    new Q4_5().swapTrick();
 
   }
 }
@@ -382,6 +383,77 @@ class Q4_4 {
 }
 
 
+/** 
+ * <pre>
+ * Java物件的交換與給值
+ * </pre>
+ */
+class Q4_5{
+  
+  public int k;
+  public int l;
+  
+  public void swapTrick(){
+    
+    int i = 0 , j = 1 ;
+    System.out.println("i = " + i + " , j = " + j );
+    swap(i, j);
+    System.out.println("i = " + i + " , j = " + j );
+    
+    System.out.println("------------------------------");
+    k = 0 ; 
+    l = 1 ;
+    System.out.println("k = " + k + " , l = " + l );
+    swap(k, l);
+    System.out.println("k = " + k + " , l = " + l );
+    
+    System.out.println("------------------------------");
+    int[] array = {0,1};
+    System.out.println("array[0] = " + array[0] + " , array[1] = " + array[1] );
+    swap(array[0], array[1]);
+    System.out.println("array[0] = " + array[0] + " , array[1] = " + array[1] );
+    
+    System.out.println("------------------------------");
+    int[] arrayTwo = {0,1};
+    System.out.println("array[0] = " + arrayTwo[0] + " , array[1] = " + arrayTwo[1] );
+    swap(arrayTwo);
+    System.out.println("array[0] = " + arrayTwo[0] + " , array[1] = " + arrayTwo[1] );
+    
+    System.out.println("------------------------------");
+    Number one = new Number();
+    one.value = 1;
+    Number two = new Number();
+    two.value = 2 ;
+    System.out.println("value = " + one.value + " , value = " + two.value );
+    swap(one,two);
+    System.out.println("value = " + one.value + " , value = " + two.value );
+  }
+  
+  private void swap(int i , int j){
+    int temp = i;
+    i = j ;
+    j = temp;
+    System.out.println("交換之後");
+  }
+  
+  private void swap(int[] array ){
+    int temp = array[0];
+    array[0] = array[1] ;
+    array[1] = temp;
+    System.out.println("交換之後");
+  }
+  
+  private void swap(Number one , Number two){
+    int temp = one.value;
+    one.value = two.value ;
+    two.value = temp;
+    System.out.println("交換之後");
+  }
+}
+
+class Number {
+  public int value;
+}
 
 
 
