@@ -427,6 +427,13 @@ class Q4_5{
     System.out.println("value = " + one.value + " , value = " + two.value );
     swap(one,two);
     System.out.println("value = " + one.value + " , value = " + two.value );
+    
+    System.out.println("------------------------------");
+    Integer ii = new Integer(1);
+    Integer jj = new Integer(0);
+    System.out.println("ii = " + ii + " , jj = " + jj );
+    swap(ii,jj);
+    System.out.println("ii = " + ii + " , jj = " + jj );
   }
   
   private void swap(int i , int j){
@@ -449,6 +456,14 @@ class Q4_5{
     two.value = temp;
     System.out.println("交換之後");
   }
+  
+  private void swap(Integer i , Integer j){
+    Integer temp = i;
+    i = j ;
+    j = temp;
+    System.out.println("交換之後");
+  }
+  
 }
 
 class Number {
