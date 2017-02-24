@@ -7,42 +7,42 @@ import java.util.Date;
 
 public class Class5 {
   public static void main(String[] args) {
-    MyStringBuffer myStringBuffer =  new MyStringBuffer();
+//    MyStringBuffer myStringBuffer =  new MyStringBuffer();
 //    myStringBuffer.testCreateSpeed();
 //    myStringBuffer.testAppendSpeed();
 //    myStringBuffer.testThreadBuffer();
-    // indexOf test
-    
-    System.out.println("--------------------");
-    System.out.println("常用字串方法");
-    // String方法 indexOf 可以出字串或字元出現的位置
-    // 若沒有出現時，會回傳-1
-    // 可以用來判斷一個字串內，是否有出現關鍵字
-    System.out.println("X出現的位置 => " + "XXXX".indexOf("X"));
-    System.out.println("空白也可以支援 => " + "XX X".indexOf(" "));
-    System.out.println("不存在時 => " + "XX1X".indexOf("2"));
-    // replace 取代文字
-    System.out.println("XXXX".replace("X", "*"));
-    
-    
-    System.out.println("--------------------");
-    System.out.println("常用Date方法");
-    MyDate date = new MyDate();
-    date.showCommonDate();
-    date.showFormatTime();
-    
-    System.out.println("--------------------");
-    System.out.println("常用BigDecimal方法");
-    MyBigDecimal bigDecimal = new MyBigDecimal();
-    bigDecimal.showCompute("1", "2");
-    bigDecimal.trick();
-    
-    System.out.println("--------------------");
-    System.out.println("常用Calendar方法");
-    MyCalendar calendar = new MyCalendar();
-    calendar.defaultSet();
-    calendar.testBetween();
-    calendar.testBetweenTwo();
+//
+//    System.out.println("--------------------");
+//    System.out.println("常用字串方法");
+//    // String方法 indexOf 可以出字串或字元出現的位置
+//    // 若沒有出現時，會回傳-1
+//    // 可以用來判斷一個字串內，是否有出現關鍵字
+//    // indexOf test
+//    System.out.println("X出現的位置 => " + "XXXX".indexOf("X"));
+//    System.out.println("空白也可以支援 => " + "XX X".indexOf(" "));
+//    System.out.println("不存在時 => " + "XX1X".indexOf("2"));
+//    // replace 取代文字
+//    System.out.println("XXXX".replace("X", "*"));
+//    
+//    
+//    System.out.println("--------------------");
+//    System.out.println("常用Date方法");
+//    MyDate date = new MyDate();
+//    date.showCommonDate();
+//    date.showFormatTime();
+//    
+//    System.out.println("--------------------");
+//    System.out.println("常用BigDecimal方法");
+//    MyBigDecimal bigDecimal = new MyBigDecimal();
+//    bigDecimal.showCompute("1", "2");
+//    bigDecimal.trick();
+//    
+//    System.out.println("--------------------");
+//    System.out.println("常用Calendar方法");
+//    MyCalendar calendar = new MyCalendar();
+//    calendar.defaultSet();
+//    calendar.testBetween();
+//    calendar.testBetweenTwo();
   }
 }
 
@@ -421,17 +421,3 @@ class MyCalendar {
   
   
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
