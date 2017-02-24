@@ -5,17 +5,19 @@ import java.util.Scanner;
 
 public class HomeWork4 {
   public static void main(String[] args) {
-    System.out.println("-----");
-    new Q4_1().sortSmallToBig();
-    new Q4_1().sortBigToSmall();
-    System.out.println("-----");
-    new Q4_2().compute();
-    System.out.println("-----");
-    new Q4_3().printYearOfDayTypeOne(2011,2017);
-    System.out.println("-----");
-    new Q4_3().printYearOfDayTypeTwo(2011,2017);
-    System.out.println("-----");
+//    System.out.println("-----");
+//    new Q4_1().sortSmallToBig();
+//    new Q4_1().sortBigToSmall();
+//    System.out.println("-----");
+//    new Q4_2().compute();
+//    System.out.println("-----");
+//    new Q4_3().printYearOfDayTypeOne(2011,2017);
+//    System.out.println("-----");
+//    new Q4_3().printYearOfDayTypeTwo(2011,2017);
+//    System.out.println("-----");
     new Q4_4().guessNumber(100);
+    System.out.println("-----");
+
   }
 }
 
@@ -294,34 +296,30 @@ class Q4_4 {
     while(true){
   
       Scanner scanner = new Scanner(System.in);
-      System.out.print("請輸入猜測的數字:");
-      if(!scanner.hasNextInt()){
-        System.out.println("請輸入這範圍內數字!! " + topNumber + "~" + endNumber);
-        System.out.println("----------------------");
+      
+      if(isNotNumber(scanner , topNumber ,endNumber)){
         continue;
       }
+      
+      
       guessNumber = Integer.parseInt(scanner.next());
       
       // 判斷輸入的數字是否超過範圍，超過範圍，使用者需要重新輸入
-      if(guessNumber < topNumber || guessNumber > endNumber){
-        System.out.println("你輸入超過範圍的數字，請輸入這個範圍內的數字，" + topNumber + "~" + endNumber);
-        System.out.println("----------------------");
+      if(this.isOutOfRange(guessNumber, topNumber, endNumber)){
         continue;
       }
-      
+
       guessNumberStr = guessNumberStr + guessNumber;
       countGuessTime++;
       
       // 若猜中終極密碼結束
-      if(guessNumber == answer){
-        System.out.println("我們在第 " + countGuessTime + " 次，猜中終極密碼 : " + answer);
-        System.out.println("總共猜測了這些數字 = " + guessNumberStr);
+      if(isEqualAnswer(guessNumber, answer, countGuessTime, guessNumberStr)){
         break;
       }
       
       // 沒有結束，繼續串聯下去
       guessNumberStr = guessNumberStr + ",";
-      
+            
       // 根據數字，設定範圍數字
       if(guessNumber > answer){
         // answer = 30
@@ -335,21 +333,53 @@ class Q4_4 {
         topNumber = guessNumber;
       }
       
-      System.out.println("已猜測數字 = " + guessNumberStr);
-      System.out.println("目前我們猜了 " +countGuessTime+ " 次");
-      System.out.println("沒有猜中，數字範圍在 " + topNumber + "~" + endNumber);
-      System.out.println("----------------------");
+      this.printInfo(guessNumberStr, countGuessTime, topNumber, endNumber);
     }
         
   }// end guessNumber
   
+
+  // 判斷輸入是不是輸字
+  private boolean isNotNumber(Scanner scanner , int topNumber , int endNumber){
+    System.out.print("請輸入猜測的數字:");
+    if(!scanner.hasNextInt()){
+      System.out.println("請輸入這範圍內數字!! " + topNumber + "~" + endNumber);
+      System.out.println("----------------------");
+      return true;
+    }
+    return false;
+  }
+  
+  // 判斷是否超過範圍
+  private boolean isOutOfRange(int guessNumber , int topNumber , int endNumber){
+    if(guessNumber < topNumber || guessNumber > endNumber){
+      System.out.println("你輸入超過範圍的數字，請輸入這個範圍內的數字，" + topNumber + "~" + endNumber);
+      System.out.println("----------------------");
+      return true;
+    }
+    return false;
+  }
+   
+  // 猜中密碼
+  private boolean isEqualAnswer(int guessNumber , int answer  , int countGuessTime , String guessNumberStr){
+    if(guessNumber == answer){
+      System.out.println("我們在第 " + countGuessTime + " 次，猜中終極密碼 : " + answer);
+      System.out.println("總共猜測了這些數字 = " + guessNumberStr);
+      return true;
+    }
+    return false;
+  }
+    
+  // 印出尚未答到答案資訊
+  private void printInfo(String guessNumberStr , int countGuessTime , int topNumber , int endNumber){
+    System.out.println("已猜測數字 = " + guessNumberStr);
+    System.out.println("目前我們猜了 " +countGuessTime+ " 次");
+    System.out.println("沒有猜中，數字範圍在 " + topNumber + "~" + endNumber);
+    System.out.println("----------------------");
+  }
+  
+  
 }
-
-
-
-
-
-
 
 
 
