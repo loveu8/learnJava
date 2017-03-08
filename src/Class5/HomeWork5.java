@@ -11,7 +11,8 @@ public class HomeWork5 {
  *  使用String與StringBuffer,StringBuilder
  *  有一串英文敘述是
  *  I have a pen.
- *  請幫我修改成
+ *  請幫我找到pen的字串位置把pen這個字串修改成apple
+ *  變成以下例句
  *  I have a apple.
  *  
  *  請幫我幫我把這兩段敘述串聯在一起
@@ -43,7 +44,7 @@ class Q5_2 {
  *  EX :
  *  2017 3月
  *  日 ㄧ 二  三  四  五  六
- *                     3   4
+ *             1   2   3   4
  *   5  6  7   8   9  10  11
  *   .......................
  *   .................31
