@@ -9,12 +9,15 @@ public class HomeWork5 {
 /**
  * <pre> 
  *  使用String與StringBuffer,StringBuilder
+ *  
+ *  第一題
  *  有一串英文敘述是
  *  I have a pen.
  *  請幫我找到pen的字串位置把pen這個字串修改成apple
  *  變成以下例句
  *  I have a apple.
  *  
+ *  第二題
  *  請幫我幫我把這兩段敘述串聯在一起
  *  I have a pen. 
  *  I have a apple.
@@ -29,8 +32,7 @@ class Q5_1 {
  * <pre>
  *  使用Date物件與Calendar物件
  *  計算下一個年度的4/1
- *  還有多少天
- *  那天是幾月幾號
+ *  那天是禮拜幾
  * </pre>
  */
 class Q5_2 {
@@ -39,7 +41,7 @@ class Q5_2 {
 
 /**
  * <pre>
- *  使用Calendar
+ *  使用Calendar物件
  *  實作出2017年的日曆表
  *  EX :
  *  2017 3月
