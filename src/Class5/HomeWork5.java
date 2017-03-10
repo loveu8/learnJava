@@ -1,14 +1,17 @@
 package Class5;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Scanner;
 
 public class HomeWork5 {
   public static void main(String[] args) {
     new Q5_1().exec();
     new Q5_2().exec();
     new Q5_3().exec();
+    new Q5_4().exec();
   }
 }
 
@@ -217,9 +220,62 @@ class Q5_3 {
  */
 class Q5_4 {
   
+  public void exec(){
+    boolean flag = true;
+    BigDecimal numberOne = null;
+    BigDecimal numberTwo = null;
+    char doMath = '\0';
+    
+    while(flag){
+      System.out.println("請輸入兩個數字，並選擇要執行的加減乘除動作，會幫您進行運算");
+      Scanner scanner = new Scanner(System.in);
+      System.out.print("請輸入第一個數字:");
+      if(!scanner.hasNextInt()){
+        System.out.println("輸入錯誤，重新開始\n");
+        continue;
+      }
+      numberOne = new BigDecimal(scanner.next());
+      System.out.println("第一個數字:"+numberOne);
+      System.out.print("\n請輸入第二個數字:");
+      if(!scanner.hasNextInt()){
+        System.out.println("輸入錯誤，重新開始\n");
+        continue;
+      }
+      numberTwo = new BigDecimal(scanner.next());
+      System.out.println("第二個數字:"+numberTwo);
+      System.out.println("\n請輸入要運算的符號 +(加) , -(減) , *(乘法) , /(除)");
+      System.out.print("符號:");
+      doMath = scanner.next().charAt(0);
+      if( !(doMath == '+' || doMath == '-' || doMath == '*' || doMath == '/') ){
+        System.out.println("輸入符號錯誤，重新開始\n");
+        continue;
+      }
+      System.out.println();
+      switch(doMath){
+        case '+':
+          System.out.println("您選了加法 , "+numberOne + "+" + numberTwo + " = " + (numberOne.add(numberTwo)));
+          break;
+        case '-':
+          System.out.println("您選了減法 , "+numberOne + "-" + numberTwo + " = " + (numberOne.subtract(numberTwo)));
+          break;
+        case '*':
+          System.out.println("您選了乘法 , "+numberOne + "*" + numberTwo + " = " + (numberOne.multiply(numberTwo)));
+          break;
+        case '/':
+          System.out.println("您選了除法 , "+numberOne + "/" + numberTwo + " = " + (numberOne.divide(numberTwo,5, BigDecimal.ROUND_HALF_UP)));
+
+          break;
+        default:
+          System.out.println("輸入錯誤的符號，請重新開始\n");
+          continue;
+      }
+      System.out.println("是否要繼續執行?，若要取消請輸入N。繼續執行輸入任意字，Enter後繼續。");
+      System.out.print("請輸入:");
+      if("N".equals(scanner.next())){
+        System.out.println("運算結束，掰掰");
+        flag = false;
+      }
+      System.out.println();
+    } // end while
+  }
 }
-
-
-
-
-
