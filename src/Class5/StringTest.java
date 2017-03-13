@@ -23,7 +23,7 @@ class MyStringTestOne{
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      for (int i = 0; i < 100; i++) {
+      for (int i = 0; i < 10; i++) {
         sb.append("hello");
       }
       running = false;
@@ -38,22 +38,22 @@ class MyStringTestTwo{
   public void exec(){
 
       StringBuffer sb = new StringBuffer();
-      System.out.println("before , StringBuilder = " + sb.toString());
+      System.out.println("before , StringBuffer = " + sb.toString());
       new Thread(new Runnable() { public void run() {
         while (running) sb.append("test");
       }}).start();
-      System.out.println("start, StringBuilder = " + sb.toString());
+      System.out.println("start, StringBuffer = " + sb.toString());
       try {
         Thread.sleep(10);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      for (int i = 0; i < 100; i++) {
+      for (int i = 0; i < 10; i++) {
         sb.append("hello");
       }
       running = false;
-      System.out.println("StringBuilder , replace = " + sb.toString().replace("test", ""));
-      System.out.println("StringBuilder , end = " + sb.toString());
+      System.out.println("StringBuffer , replace = " + sb.toString().replace("test", ""));
+      System.out.println("StringBuffer , end = " + sb.toString());
       System.out.println("---------------------------------------------------------------");
   }
 }
