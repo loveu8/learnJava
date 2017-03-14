@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -24,6 +25,7 @@ import java.util.TreeSet;
  * 類似集合物件有
  * Map
  * 以下只說明常用的 Map , List , Set
+ * 以及常用foreach
  * </pre>
  */
 public class Class6 {
@@ -39,6 +41,11 @@ public class Class6 {
     // new MyList().doLinkedListRemoveSpeed();
     // new MySet().testSetSort();
     // new MySet().testSpeed();
+    // new MyLoop().basic();
+    // new MyLoop().doArrayLoop();
+    // new MyLoop().doListLoop();
+    // new MyLoop().doMapLoop();
+    // new MyLoop().doSetLoop();
   }
 }
 
@@ -380,3 +387,98 @@ class Dog implements Comparable<Dog> {
     return size - o.size;
   }
 }
+
+
+/**
+ * <pre>
+ * 
+ * foreach 
+ * for-each語法就是當我們想要存取元素時、更有效率的語法。
+ * 只適用在 Array或Collection 
+ *  
+ * 只適用於 Java 5.0 以後的版本
+ * 只適用於有 implement Iterable的類別基本上 Array 與 Collection 類別都沒問題。
+ * 只能存取裡面元素而不能置換掉它，記住，for-each 裡面的變數是 local 
+ * 變數離開 for-each 之後就會消失。
+ * 只能同時針對一個 Array 或 Collection 進行操作。
+ * 只能同時針對一個元素操作。
+ * 只能從頭開始訪問每個元素。
+ *
+ * Iterator : 
+ * 稱為迭代器，或者游標，主要功能是可以尋訪整個容器(集合)內的元素
+ * 若物件有實作Iterator的時候，都可以使用foreach
+ * 
+ * </pre>
+ */
+class MyLoop {
+  
+  public void basic(){
+    System.out.println("doBasic--------------");
+    ArrayList<String> list = new ArrayList<String>();
+    for (int index = 0; index < 10; index++) {
+      list.add(Integer.toString(index));
+    }
+    
+    /**
+     * 以下是實際foreach實作的內容
+     * list本身有實作 Iterator，變可以使用iterator()方式，取出元素內的物件
+     * hasNext() 代表是，還有下一個元素
+     * next()，會取出目前指到元素內容
+     */
+    for(Iterator<String> i = list.iterator(); i.hasNext(); ) {
+      String item = i.next();
+      System.out.println(item);
+    }
+    System.out.println("-------------------------");
+  }
+  
+  public void doArrayLoop(){
+    System.out.println("doArrayLoop--------------");
+    String[] strArrays = new String[10];
+    for(int index = 0 ; index < strArrays.length ; index ++){
+      strArrays[index] = Integer.toString(index);
+    }
+    for(String value : strArrays){
+      System.out.println("value = " + value);
+    }
+    System.out.println("-------------------------");
+  }
+  
+  public void doMapLoop(){
+    System.out.println("doMapLoop--------------");
+    Map<String, String> myMap = new HashMap<String, String>();
+    for(int index = 0 ; index < 11 ; index ++){
+      myMap.put(Integer.toString(index) , Integer.toString(index));
+    }
+    for(String key : myMap.keySet()){
+      System.out.println("key = " + key + " , value = " + myMap.get(key));
+    }
+    System.out.println("-------------------------");
+  }
+  
+  public void doListLoop(){
+    System.out.println("doListLoop--------------");
+    ArrayList<String> list = new ArrayList<String>();
+    for(int index = 0 ; index < 11 ; index ++){
+      list.add(Integer.toString(index));
+    }
+    for(String value : list){
+      System.out.println("value = " + value);
+    }
+    System.out.println("-------------------------");
+  }
+  
+  public void doSetLoop(){
+    System.out.println("doSetLoop--------------");
+    HashSet<String> hs = new HashSet<String>();
+    for(int index = 0 ; index < 11 ; index ++){
+      hs.add(Integer.toString(index));
+    }
+    for(String value : hs){
+      System.out.println("value = " + value);
+    }
+    System.out.println("-------------------------");
+  }
+  
+}
+
