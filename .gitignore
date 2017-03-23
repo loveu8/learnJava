@@ -5,3 +5,4 @@
 bin/*
 /bin/
 org.eclipse.wst.common.project.facet.core.xml
+.settings/org.jboss.ide.eclipse.as.core.prefs
