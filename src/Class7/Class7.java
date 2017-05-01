@@ -108,7 +108,11 @@ interface FoodAction{
   public void cooking();
 }
 
-//類別 蛋糕，繼承了食物，實作了料理過程
+// 抽象類別 蛋糕，繼承了食物，實作了料理過程
+// 為什麼需要抽像類別的原因是
+// 食物是一個大型類別，可以用這個方式
+// 定義出大家相同的部分，剩下給想要繼承的類別
+// 自己做出想要的東西即可
 abstract class Food implements FoodAction{
   protected String raw;
   private String name;
@@ -149,7 +153,7 @@ class Cake extends Food {
 }
 
 // 類別 茶，繼承了食物，實作了料理過程
-class Tea extends Food implements FoodAction{
+class Tea extends Food {
 
   @Override
   public void setRaw(String raw) {
@@ -198,3 +202,21 @@ class Overloading{
     System.out.println("睡多久 = " + time  + "s");
   }
 }
+
+
+// 練習
+// 遊戲中有許多"角色"
+// 角色有血量，等級
+// 角色有三種職業
+// 戰士、魔法師、弓箭手
+// 每個人都會"基本攻擊" 以及"特殊技能"
+// 設計出相關類別與介面
+// 並且請幫我用繼承，抽象，多型，封裝方式設計
+
+
+
+
+
+
+
+
