@@ -65,7 +65,7 @@ class Q7_1 {
   Map<String, Drink> menu; // 6.建立一個menu
 
   public void exec() {
-    menu = new gendrink().initdrinkData(); // 7.把值建立出來=>利用gendrink類別的方法(initdrinkData) =>show值
+    menu = new Gendrink().initdrinkData(); // 7.把值建立出來=>利用gendrink類別的方法(initdrinkData) =>show值
     for (String key : menu.keySet()) {
       System.out.println(menu.get(key).toString());
     }
@@ -100,7 +100,7 @@ abstract class food { // 1.建立共同food類別
 }
 
 
-
+// 設定飲料的動作
 interface SetDrinkAction {
   public void setting(String ice, String sugar, String bigsmall);
 }
@@ -191,7 +191,7 @@ class Drink extends food implements SetDrinkAction { // 3.繼承food 類別 並�
 
 
 // "材料"，"容量"，"卡洛里"與"價格"
-class gendrink {
+class Gendrink {
   public Map<String, Drink> initdrinkData() { // initdrinkData方法名稱
     Map<String, Drink> drink = new HashMap<String, Drink>();
     drink.put("大正紅茶", new Drink("茶葉  原產地：印度", "大正紅茶", "茶葉", "190", 30)); // 5.預設值
