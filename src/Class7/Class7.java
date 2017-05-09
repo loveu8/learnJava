@@ -64,7 +64,15 @@ public class Class7 {
 //    tea.cooking();
     
     // Overloading 多載
-//    new Overloading().exec();
+    new Overloading().exec();
+    role test =new knife("95%","20" );
+    test.attack();
+    test.special();
+    test.getLevel();
+    test.getLife();
+    System.out.println(test.getLevel());
+    System.out.println(test.getLife());
+    
   }
 }
 
@@ -81,6 +89,7 @@ abstract class ONE_PIECE {
     System.out.println("故事開始了!!");
   }
   public String 大祕寶 = "???";
+  
 }
 
 class 魯夫 extends ONE_PIECE{
@@ -129,7 +138,6 @@ abstract class Food implements FoodAction{
 class Cake extends Food {
 
   @Override
-
   public void setRaw(String raw) {
     this.raw = raw;
   }
@@ -214,8 +222,93 @@ class Overloading{
 // 並且請幫我用繼承，抽象，多型，封裝方式設計
 
 
+abstract class role implements Action{  //抽項類別
+ private String life;
+ private String level;
+ 
+public String getLife() {
+  return life;
+}
+public void setLife(String life) {
+  this.life = life;
+}
+public String getLevel() {
+  return level;
+}
+public void setLevel(String level) {
+  this.level = level;
+}
+  
+}
+
+interface Action{  //有相同功能介面
+  public void attack();
+  public void special();
+ 
+}
 
 
+
+class soward extends role {
+
+  public soward(String life,String level){
+    setLife(life);
+    setLevel(level);
+  }
+  @Override
+  public void attack() {
+    
+    System.out.println("A++");
+  }
+
+  @Override
+  public void special() {
+    System.out.println("level--");
+    
+  }
+  
+}
+
+class magic extends role {
+
+  public magic(String life,String level){
+    setLife(life);
+    setLevel(level);
+  }
+  @Override
+  public void attack() {
+    
+    System.out.println("A+++");
+  }
+
+  @Override
+  public void special() {
+    System.out.println("level---");
+    
+  }
+  
+}
+
+
+class knife extends role {
+
+  public knife(String life,String level){
+    setLife(life); //初始化值
+    setLevel(level);
+  }
+  @Override
+  public void attack() {
+    
+    System.out.println("A++++");
+  }
+
+  @Override
+  public void special() {
+    System.out.println("level----");
+    
+  }
+  
+}
 
 
 
