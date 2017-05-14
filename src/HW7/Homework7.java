@@ -1,6 +1,7 @@
 package HW7;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -62,32 +63,28 @@ public class Homework7 {
  */
 class Q7_1 {
 
-  Map<String, Drink> menu; // 6.建立一個menu
+  // 建立一個drinkInfo
+  Map<String, Drink> drinkInfo; 
 
+  // 執行
   public void exec() {
-    menu = new Gendrink().initdrinkData(); // 7.把值建立出來=>利用gendrink類別的方法(initdrinkData) =>show值
-    for (String key : menu.keySet()) {
-      System.out.println(menu.get(key).toString());
+    drinkInfo = new GenDrinkInfo().initdrinkData(); 
+    for (String key : drinkInfo.keySet()) {
+      System.out.println(drinkInfo.get(key).toString());
     }
   }
+  
 }
 
 
-abstract class food { // 1.建立共同food類別
-  private String desc;
+//1.建立共同food類別
+abstract class Food { 
   private String name;
+  private String desc;
 
-  public food(String desc, String name) { // 2.建立建構子初始化
-    setDesc(desc);
+  public Food(String name , String desc) { // 2.建立建構子初始化
     setName(name);
-  }
-
-  public String getDesc() {
-    return desc;
-  }
-
-  public void setDesc(String desc) {
-    this.desc = desc;
+    setDesc(desc);
   }
 
   public String getName() {
@@ -97,46 +94,50 @@ abstract class food { // 1.建立共同food類別
   public void setName(String name) {
     this.name = name;
   }
-}
-
-
-// 設定飲料的動作
-interface SetDrinkAction {
-  public void setting(String ice, String sugar, String bigsmall);
-}
-
-
-
-class Drink extends food implements SetDrinkAction { // 3.繼承food 類別 並在新增屬於自己的內容物
-  public Drink(String desc, String name, String raw, String kcal, int price) { // 4.父類別的建構子會super(food
-                                                                               // 內的內容),在繼續建立屬於drink的建構子
-    super(desc, name);
-    setRaw(raw);
-    setKcal(kcal);
-    setPrice(price);
-
+  
+  public String getDesc() {
+    return desc;
   }
 
-  // "材料"，"容量"，"卡洛里"與"價格"
+  public void setDesc(String desc) {
+    this.desc = desc;
+  }
+}
+
+//設定飲料的動作(可變動)
+interface SetDrinkAction {
+public void setting(String sugar , boolean hot , String ice , int number);
+}
+
+class Drink extends Food implements SetDrinkAction {
+  
+  // 初始不可變動飲料參數
+  public Drink(String name , String desc , String raw , String bigsmall , int price , String ml , String kcal) {
+    super(name, desc);
+    setRaw(raw);
+    setBigsmall(bigsmall);
+    setPrice(price);
+    setMl(ml);
+    setKcal(kcal);
+  }
+  // 不可變動
   private String raw;
-
+  private String bigsmall;
+  private int price;
   private String ml;
-
   private String kcal;
 
-  private int price;
-
+  // 可以變動
+  private boolean hot;
   private String ice;
-
   private String sugar;
-
-  private String bigsmall;
+  private int number;
 
   public String getRaw() {
     return raw;
   }
 
-  public void setRaw(String raw) {
+  private void setRaw(String raw) {
     this.raw = raw;
   }
 
@@ -156,14 +157,8 @@ class Drink extends food implements SetDrinkAction { // 3.繼承food 類別 並�
     return price;
   }
 
-  public void setPrice(int price) {
+  private void setPrice(int price) {
     this.price = price;
-  }
-
-  public String toString() { // 內建system.out.println toString方法
-    return "name = " + getName() + ",desc = " + getDesc() + ",raw = " + getRaw()
-         + ",ml = " + getMl() + ",kcal = " + getKcal() + ",price = " + getPrice()
-         + ",ice = " + getIce() + ",sugar =" + getSugar() + ",bigsmall =" + getBigsmall();
   }
 
   public String getIce() {
@@ -177,27 +172,128 @@ class Drink extends food implements SetDrinkAction { // 3.繼承food 類別 並�
   public String getBigsmall() {
     return bigsmall;
   }
-
-  @Override
-  public void setting(String ice, String sugar, String bigsmall) {
-    this.ice = ice;
-    this.sugar = sugar;
+  
+  private void setBigsmall(String bigsmall) {
     this.bigsmall = bigsmall;
-    this.ml = "L".equals(bigsmall) ? "700" : "500";
+  }
+  
+  public int getNumber() {
+    return number;
   }
 
+  public void setNumber(int number) {
+    this.number = number;
+  }
+
+  public boolean isHot() {
+    return hot;
+  }
+
+  public void setHot(boolean hot) {
+    this.hot = hot;
+  }
+
+  private void setMl(String ml) {
+    this.ml = ml;
+  }
+
+  public void setIce(String ice) {
+    if(this.hot){
+      ice = "";
+    } else {
+      this.ice = ice;
+    }
+  }
+
+  public void setSugar(String sugar) {
+    this.sugar = sugar;
+  }
+  
+  @Override
+  public void setting(String sugar , boolean hot , String ice , int number) {
+    this.sugar = sugar;
+    this.hot = hot;
+    // 需要確認冷熱後，才能決定冰塊
+    setIce(ice);
+    this.number = number;
+  }
+  
+  //內建system.out.println toString方法
+  public String toString() { 
+    return "name = " + getName() + ",desc = " + getDesc() + ",raw = " + getRaw()
+         + ",ml = " + getMl() + ",kcal = " + getKcal() + ",price = " + getPrice()
+         + ",ice = " + getIce() + ",sugar =" + getSugar() + ",bigsmall =" + getBigsmall()
+         + ",sugar = " + getSugar() + ",hot =" + isHot() + ",ice =" + getIce() + ",number =" + getNumber();
+  }
 
 }
 
 
-// "材料"，"容量"，"卡洛里"與"價格"
-class Gendrink {
+enum DrinkName {
+
+  大正紅茶("大正紅茶"),
+  初露青茶("初露青茶"), 
+  珍珠紅茶拿鐵("珍珠紅茶拿鐵");
+  
+  private final String name;
+  
+  DrinkName(String name){
+    this.name = name;
+  }
+
+  public String getName(){
+    return name;
+  }
+  
+}
+
+
+class GenDrinkInfo {
   public Map<String, Drink> initdrinkData() { // initdrinkData方法名稱
     Map<String, Drink> drink = new HashMap<String, Drink>();
-    drink.put("大正紅茶", new Drink("茶葉  原產地：印度", "大正紅茶", "茶葉", "190", 30)); // 5.預設值
-    drink.put("初露青茶", new Drink("茶葉  原產地：台灣", "初露青茶", "茶葉", "140", 30));
+    drink.put("大正紅茶-L", new Drink(DrinkName.大正紅茶.getName() , "茶葉  原產地：印度", "茶葉" , "L" , 30 , "700", "140"));
+    drink.put("初露青茶-L", new Drink(DrinkName.初露青茶.getName() , "茶葉  原產地：台灣", "茶葉" , "L" , 30 , "700", "140"));
+    drink.put("珍珠紅茶拿鐵-M", new Drink(DrinkName.珍珠紅茶拿鐵.getName() , "茶葉  原產地：印度", "茶葉 , 牛奶 , 珍珠" , "M" , 50 , "500", "100"));
+    drink.put("珍珠紅茶拿鐵-L", new Drink(DrinkName.珍珠紅茶拿鐵.getName() , "茶葉  原產地：印度", "茶葉 , 牛奶 , 珍珠" , "L" , 60 , "700", "120"));
     return drink;
   }
-
 }
 
+
+class Order {
+  private String cusName;
+  private String cusTelphone;
+  private String address;
+  private boolean toGo;
+  List<Drink> drinks;
+  public String getCusName() {
+    return cusName;
+  }
+  public void setCusName(String cusName) {
+    this.cusName = cusName;
+  }
+  public String getCusTelphone() {
+    return cusTelphone;
+  }
+  public void setCusTelphone(String cusTelphone) {
+    this.cusTelphone = cusTelphone;
+  }
+  public String getAddress() {
+    return address;
+  }
+  public void setAddress(String address) {
+    this.address = address;
+  }
+  public boolean isToGo() {
+    return toGo;
+  }
+  public void setToGo(boolean toGo) {
+    this.toGo = toGo;
+  }
+  public List<Drink> getDrinks() {
+    return drinks;
+  }
+  public void setDrinks(List<Drink> drinks) {
+    this.drinks = drinks;
+  }
+}
