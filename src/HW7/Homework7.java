@@ -108,6 +108,7 @@ class Q7_1 {
       switch(functionFlag){
         case 1:
           orderDrink();
+          
           break;
         case 2:
           
