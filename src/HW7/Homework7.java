@@ -94,6 +94,7 @@ class Q7_1 {
     boolean system = true;
     
     while(system){
+      System.out.println("--------------------");
       System.out.println("飲料點餐系統");
       Scanner scanner = new Scanner(System.in);
       System.out.println("1.點餐系統，請按1");
@@ -105,13 +106,13 @@ class Q7_1 {
         continue;
       }
       int functionFlag = Integer.parseInt(scanner.next()); 
+      System.out.println("--------------------");
       switch(functionFlag){
         case 1:
           orderDrink();
-          system = false;
           break;
         case 2:
-          
+          orderQuery();
           break;
         case 0:
           system = false;
@@ -179,10 +180,10 @@ class Q7_1 {
       
       // 顯示飲料清單
       System.out.println("-------------------");
-      System.out.println("飲料清單");
+      System.out.println("以下是飲料清單，請根據下方清單進行點選");
       List<Drink> drinks = new LinkedList<Drink>();
-      boolean drinkOrderSystem = true;
-      while(drinkOrderSystem){
+      boolean settingDrinkSystem = true;
+      while(settingDrinkSystem){
         Map<String, Drink> drinkInfoDetail = new GenDrinkInfo().initdrinkData();
         for(String key : drinkInfoDetail.keySet()){
           System.out.println("編號 : " + drinkInfoDetail.get(key).getProdNumber()+ 
@@ -208,8 +209,8 @@ class Q7_1 {
           System.out.println("請選擇正確的飲料");
           continue;
         }
-        
-        // 取得飲料，開始設定
+        System.out.println("--------------------");
+        // 根據編號取得飲料，開始設定冰塊，糖度，etc...
         Drink drink = drinkInfoDetail.get(input);
         System.out.print("糖度(全糖:1，七分糖:2，五分糖:3，三分糖:4，無糖:5)(離開請按0):");
         String sugar = scanner.next();
@@ -230,13 +231,13 @@ class Q7_1 {
           orderDrinkSystem = false;
           break;
         }
-        if("01".indexOf(hot) < 0){
+        if("12".indexOf(hot) < 0){
           System.out.println("請選擇正確的冷熱");
           continue;
         }
         
         String ice = "";
-        if("0".equals(hot)){
+        if("1".equals(hot)){
           System.out.print("冰量(正常冰:1，少冰:2，微冰:3，去冰:4 )(離開請按0):");
           ice = scanner.next();
           if("0".equals(ice)){
@@ -262,39 +263,46 @@ class Q7_1 {
           continue;
         }
         
-        drink.setting(sugar, hot.equals("0") ?  false : true, ice, Integer.parseInt(strNumber));
-
+        
+        drink.setting(sugar , (hot.equals("1") ?  false : true) , ice , Integer.parseInt(strNumber));
         drinks.add(drink);
                 
         System.out.print("是否還需要繼續點餐? (1:繼續  , 0:離開) : ");
         String isOrderAgain = scanner.next();
         if("1".indexOf(isOrderAgain) == 0){
-          System.out.println("繼續點餐)");
+          System.out.println("(繼續點餐)");
+          System.out.println("-------------------");
           continue;
         } else {
-          System.out.println("點餐完畢)");
-          drinkOrderSystem = false;
+          order.setDrinks(drinks);
+          orders.add(order);
+          System.out.println("(點餐完畢)");
+          System.out.println("-------------------");
+          System.out.println(order.toString());
+          settingDrinkSystem = false;
+          orderDrinkSystem = false;
         }
       }
-      order.setDrinks(drinks);
-      System.out.println("-------------------");
-      System.out.println("訂購資訊");
-      System.out.println("顧客姓名 : " + order.getCusName());
-      System.out.println("手機號碼 : " + order.getCusTelphone());
-      System.out.println("外帶        : " + order.isToGo());
-      System.out.println("地址        : " + order.getAddress());
-      System.out.println("-------------------");
-      System.out.println("飲料清單");
-      for(Drink data : order.getDrinks()){
-        System.out.println(data.printDrink());
-      }
-      System.out.println("-------------------");
-      orders.add(order);
     }
   }
   
   private void orderQuery(){
-    
+    boolean isQuery = true;
+    System.out.println("-------------------");
+    System.out.println("2.1 您進入點餐查詢介面");
+    while(isQuery){
+      for(Order data : orders){
+        System.out.println(data.toString());
+      }
+      Scanner scanner = new Scanner(System.in);
+      System.out.print("是否要繼續查詢(1:繼續 , 0:離開):");
+      if("0".equals(scanner.next())){
+        System.out.println("2.1 查詢結束");
+        System.out.println("-------------------");
+        isQuery = false;
+        break;
+      }
+    }
   }
   
 }
@@ -460,9 +468,9 @@ class Drink extends Food implements SetDrinkAction {
   }
   
   public String printDrink(){
-    return "name = " + getName() + ",price = " + getPrice()
-            + ", bigsmall =" + getBigsmall() + ",sugar = " + getSugar() + ",hot =" + isHot() 
-            + ", ice =" + getIce() + ",number =" + getNumber();
+    return "飲料 : " + getName() + " 價格 : " + getPrice()
+            + " 大小 : " + getBigsmall() + " 糖量 : " + getSugar() + " 冷熱 : " + isHot() 
+            + " 冰量 : " + getIce() + " 杯數 : " + getNumber();
   }
 
 }
@@ -534,5 +542,26 @@ class Order {
   }
   public void setDrinks(List<Drink> drinks) {
     this.drinks = drinks;
+  }
+  
+  public String toString(){
+    StringBuilder builder = new StringBuilder();
+    builder.append("-------------------");
+    builder.append("\n訂購資訊");
+    builder.append("\n顧客姓名 : " + getCusName());
+    builder.append("\n手機號碼 : " + getCusTelphone());
+    builder.append("\n是否外帶 : " + isToGo());
+    builder.append("\n地址      " + getAddress());
+    builder.append("\n-------------------");
+    if(getDrinks()!=null){
+      builder.append("\n飲料清單");
+      for(Drink data : getDrinks()){
+        builder.append("\n" + data.printDrink());
+      }
+    } else {
+      builder.append("\n尚未設定飲料");
+    }
+    builder.append("\n-------------------");
+    return builder.toString();
   }
 }
