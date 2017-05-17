@@ -1,5 +1,7 @@
 package HW7;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -182,7 +184,7 @@ class Q7_1 {
       List<Drink> drinks = new LinkedList<Drink>();
       boolean settingDrinkSystem = true;
       while(settingDrinkSystem){
-        Map<String, Drink> drinkInfoDetail = new GenDrinkInfo().initdrinkData();
+        Map<String, Drink> drinkInfoDetail = drinkInfo;
         for(String key : drinkInfoDetail.keySet()){
           System.out.println("編號 : " + drinkInfoDetail.get(key).getProdNumber()+ 
                              " 飲料 : " + drinkInfoDetail.get(key).getName() + 
@@ -272,6 +274,9 @@ class Q7_1 {
           System.out.println("-------------------");
           continue;
         } else {
+          order.setNo(String.valueOf(orders.size() + 1));
+          SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HH:mm:ss:SSS");
+          order.setOrderDate(sdf.format(new Date()));
           order.setDrinks(drinks);
           orders.add(order);
           System.out.println("(點餐完畢)");
@@ -289,17 +294,90 @@ class Q7_1 {
     System.out.println("-------------------");
     System.out.println("2.1 您進入點餐查詢介面");
     while(isQuery){
-      for(Order data : orders){
-        System.out.println(data.toString());
-      }
+
       Scanner scanner = new Scanner(System.in);
-      System.out.print("是否要繼續查詢(1:繼續 , 0:離開):");
-      if("0".equals(scanner.next())){
+      System.out.println("1 : 查詢全部交易");
+      System.out.println("2 : 查詢編號");
+      System.out.println("3 : 查詢訂購者");
+      System.out.println("4 : 查詢訂購者電話");
+      System.out.println("5 : 查詢單日訂單(ex:20170517)");
+      System.out.println("0 : 離開");
+      System.out.print("請選擇你要的查詢功能(1~5):");
+      String input = scanner.next();
+      if("012345".indexOf(input) < 0){
+        System.out.println("請選擇正確的功能");
+      }
+      if("0".equals(input)){
         System.out.println("2.1 查詢結束");
         System.out.println("-------------------");
         isQuery = false;
         break;
       }
+      int functionFlag = Integer.parseInt(input);
+      switch(functionFlag){
+        case 1:
+          for(Order data : orders){
+            System.out.println(data.toString());
+          }
+          break;
+        case 2:
+          System.out.print("請輸入要查詢的編號:");
+          input = scanner.next();
+          boolean checkNo = false;
+          for(Order data : orders){
+            if(input.equals(data.getNo())){
+              System.out.println(data.toString());
+              checkNo = true;
+            }
+          }
+          if(!checkNo){
+            System.out.println("查無資料!!");
+          }
+          break;
+        case 3:
+          System.out.print("請輸入要查詢的訂購者:");
+          input = scanner.next();
+          boolean checkCusName = false;
+          for(Order data : orders){
+            if(input.equals(data.getCusName())){
+              System.out.println(data.toString());
+              checkCusName = true;
+            }
+          }
+          if(!checkCusName){
+            System.out.println("查無資料!!");
+          }
+          break;
+        case 4:
+          System.out.print("請輸入要查詢的訂購者電話:");
+          input = scanner.next();
+          boolean checkCusTelphone = false;
+          for(Order data : orders){
+            if(input.equals(data.getCusTelphone())){
+              System.out.println(data.toString());
+              checkCusTelphone = true;
+            }
+          }
+          if(!checkCusTelphone){
+            System.out.println("查無資料!!");
+          }
+          break;
+        case 5:
+          System.out.print("請輸入要查詢的訂購日期(ex:20170517):");
+          input = scanner.next();
+          boolean checkOrderDate = false;
+          for(Order data : orders){
+            if(data.getOrderDate().indexOf(input) >= 0){
+              System.out.println(data.toString());
+              checkOrderDate = true;
+            }
+          }
+          if(!checkOrderDate){
+            System.out.println("查無資料!!");
+          }
+          break;
+      }
+      System.out.println("-------------------");
     }
   }
   
@@ -539,15 +617,21 @@ class GenDrinkInfo {
   }
 }
 
-
-
-
 class Order {
+  private String no;
   private String cusName;
   private String cusTelphone;
   private String address;
   private boolean toGo;
-  List<Drink> drinks;
+  private String orderDate;
+  private List<Drink> drinks;
+  
+  public String getNo() {
+    return no;
+  }
+  public void setNo(String no) {
+    this.no = no;
+  }
   public String getCusName() {
     return cusName;
   }
@@ -572,6 +656,12 @@ class Order {
   public void setToGo(boolean toGo) {
     this.toGo = toGo;
   }
+  public String getOrderDate() {
+    return orderDate;
+  }
+  public void setOrderDate(String orderDate) {
+    this.orderDate = orderDate;
+  }
   public List<Drink> getDrinks() {
     return drinks;
   }
@@ -583,10 +673,12 @@ class Order {
     StringBuilder builder = new StringBuilder();
     builder.append("-------------------");
     builder.append("\n訂購資訊");
+    builder.append("\n編號     : " + getNo());
     builder.append("\n顧客姓名 : " + getCusName());
     builder.append("\n手機號碼 : " + getCusTelphone());
     builder.append("\n是否外帶 : " + isToGo());
-    builder.append("\n地址      " + getAddress());
+    builder.append("\n地址     : " + getAddress());
+    builder.append("\n訂購日期 : " + getOrderDate());
     builder.append("\n-------------------");
     if(getDrinks()!=null){
       builder.append("\n飲料清單");
