@@ -1,12 +1,10 @@
 package HW7;
 
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 public class Homework7 {
   public static void main(String[] args) {
@@ -238,7 +236,7 @@ class Q7_1 {
         
         String ice = "";
         if("1".equals(hot)){
-          System.out.print("冰量(正常冰:1，少冰:2，微冰:3，去冰:4 )(離開請按0):");
+          System.out.print("冰量(正常冰:1，少冰:2，微冰:3，去冰:4)(離開請按0):");
           ice = scanner.next();
           if("0".equals(ice)){
             System.out.println("取消點餐");
@@ -337,7 +335,7 @@ abstract class Food {
 
 //設定飲料的動作(可變動)
 interface SetDrinkAction {
-public void setting(String sugar , boolean hot , String ice , int number);
+  public void setting(String sugar , boolean hot , String ice , int number);
 }
 
 class Drink extends Food implements SetDrinkAction {
@@ -468,32 +466,67 @@ class Drink extends Food implements SetDrinkAction {
   }
   
   public String printDrink(){
-    return "飲料 : " + getName() + " 價格 : " + getPrice()
-            + " 大小 : " + getBigsmall() + " 糖量 : " + getSugar() + " 冷熱 : " + isHot() 
-            + " 冰量 : " + getIce() + " 杯數 : " + getNumber();
+    DrinkSettingConvert convert = new DrinkSettingConvert();
+    return "飲料 : " + getName() + " , 價格 : " + getPrice()
+            + " , 大小 : " + getBigsmall() + " , 糖量 : " + convert.sugarName(getSugar()) + " , 冷熱 : " + convert.coldOrHot(isHot()) 
+            + " , 冰量 : " + convert.iceAmount(getIce()) + " , 杯數 : " + getNumber();
   }
 
 }
 
-
 enum DrinkName {
-
   大正紅茶("大正紅茶"),
   初露青茶("初露青茶"), 
   珍珠紅茶拿鐵("珍珠紅茶拿鐵");
-  
   private final String name;
-  
   DrinkName(String name){
     this.name = name;
   }
-
   public String getName(){
     return name;
   }
-  
 }
 
+class DrinkSettingConvert {
+  public String sugarName(String sugar){
+    if("1".equals(sugar)){
+      return "全糖";
+    }
+    if("2".equals(sugar)){
+      return "七分糖";
+    }
+    if("3".equals(sugar)){
+      return "五分糖";
+    }
+    if("4".equals(sugar)){
+      return "三分糖";
+    }
+    if("5".equals(sugar)){
+      return "無糖";
+    }
+    return "";
+  }
+  public String coldOrHot(boolean hot){
+    // 冷:false，熱:True
+    return hot ? "熱": "冷";
+  }
+  public String iceAmount(String ice){
+    // 正常冰:1，少冰:2，微冰:3，去冰:4
+    if("1".equals(ice)){
+      return "正常冰";
+    }
+    if("2".equals(ice)){
+      return "少冰";
+    }
+    if("3".equals(ice)){
+      return "微冰";
+    }
+    if("4".equals(ice)){
+      return "去冰";
+    }
+    return "";
+  }
+}
 
 class GenDrinkInfo {
   public Map<String, Drink> initdrinkData() { // initdrinkData方法名稱
@@ -505,6 +538,8 @@ class GenDrinkInfo {
     return drink;
   }
 }
+
+
 
 
 class Order {
