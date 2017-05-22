@@ -215,13 +215,13 @@ class Q7_1 {
           }
           break;
         case 2:
-          System.out.println("請輸入想要修改的飲料(離開請按0):");
           for(String key : drinkInfo.keySet()){
             System.out.println("編號 : " + drinkInfo.get(key).getProdNumber()+ 
                                " 飲料 : " + drinkInfo.get(key).getName() + 
                                " 大小 : " + drinkInfo.get(key).getBigsmall() + 
                                " 價格 : " + drinkInfo.get(key).getPrice());
           }
+          System.out.println("請輸入想要修改的飲料(不修此項按S，離開請按0):");
           String prodNumber = scanner.next();
           if(drinkInfo.get(prodNumber) == null){
             System.out.print("請入的飲料編號錯誤，請重新選擇維護飲料功能重新開始");
@@ -233,43 +233,49 @@ class Q7_1 {
             System.out.println("取消設定");
             break;
           }
+          if("S".equals(editName)){
+            editName = drinkInfo.get(prodNumber).getName();
+          }
           
-          System.out.print("請輸入飲料的說明(離開請按0):");
+          System.out.print("請輸入飲料的說明(不修此項按S，離開請按0):");
           String editDesc = scanner.next();
           if("0".equals(editDesc)){
             System.out.println("取消設定");
             break;
           }
+          if("S".equals(editDesc)){
+            editName = drinkInfo.get(prodNumber).getDesc();
+          }
           
-          System.out.print("請輸入飲料的原料(離開請按0):");
+          System.out.print("請輸入飲料的原料(不修此項按S，離開請按0):");
           String editRaw = scanner.next();
           if("0".equals(editRaw)){
             System.out.println("取消設定");
             break;
           }
           
-          System.out.print("請輸入飲料的大小杯(離開請按0):");
+          System.out.print("請輸入飲料的大小杯(不修此項按S，離開請按0):");
           String editBigSmall = scanner.next();
           if("0".equals(editBigSmall)){
             System.out.println("取消設定");
             break;
           }
           
-          System.out.print("請輸入飲料的價格(離開請按0):");
+          System.out.print("請輸入飲料的價格(不修此項按S，離開請按0):");
           String editPrice = scanner.next();
           if("0".equals(editPrice)){
             System.out.println("取消設定");
             break;
           }
           
-          System.out.print("請輸入飲料的容量(離開請按0):");
+          System.out.print("請輸入飲料的容量(不修此項按S，離開請按0):");
           String editMl = scanner.next();
           if("0".equals(editMl)){
             System.out.println("取消設定");
             break;
           }
           
-          System.out.print("請輸入飲料的卡洛里(離開請按0):");
+          System.out.print("請輸入飲料的卡洛里(不修此項按S，離開請按0):");
           String editKcal = scanner.next();
           if("0".equals(editKcal)){
             System.out.println("取消設定");
