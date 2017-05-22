@@ -215,7 +215,7 @@ class Q7_1 {
           }
           break;
         case 2:
-          System.out.print("請輸入想要修改的飲料(離開請按0):");
+          System.out.println("請輸入想要修改的飲料(離開請按0):");
           for(String key : drinkInfo.keySet()){
             System.out.println("編號 : " + drinkInfo.get(key).getProdNumber()+ 
                                " 飲料 : " + drinkInfo.get(key).getName() + 
@@ -284,18 +284,19 @@ class Q7_1 {
           }
           break;
         case 3:
-          System.out.print("請輸入要刪除的飲料(離開請按0):");
-          String removeProdNumber = scanner.next();
-          if("0".equals(removeProdNumber)){
-            System.out.println("取消設定");
-            break;
-          }
           for(String key : drinkInfo.keySet()){
             System.out.println("編號 : " + drinkInfo.get(key).getProdNumber()+ 
                                " 飲料 : " + drinkInfo.get(key).getName() + 
                                " 大小 : " + drinkInfo.get(key).getBigsmall() + 
                                " 價格 : " + drinkInfo.get(key).getPrice());
           }
+          System.out.print("請輸入要刪除的飲料(離開請按0):");
+          String removeProdNumber = scanner.next();
+          if("0".equals(removeProdNumber)){
+            System.out.println("取消設定");
+            break;
+          }
+
           if(drinkInfo.get(removeProdNumber) == null){
             System.out.print("請入的飲料編號錯誤，請重新選擇維護飲料功能重新開始");
             break;
@@ -321,8 +322,10 @@ class Q7_1 {
           break;
         case 0:
           System.out.println("飲料維護結束");
+          adjDrink = false;
           break;
       }
+      System.out.println("--------------------");
     }
   }
 
