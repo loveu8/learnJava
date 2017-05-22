@@ -99,6 +99,7 @@ class Q7_1 {
       Scanner scanner = new Scanner(System.in);
       System.out.println("1.點餐系統，請按1");
       System.out.println("2.訂單查詢，請按2");
+      System.out.println("3.飲料維護，請按3");
       System.out.println("0.結束功能，請按0");
       System.out.print("請輸入要執行的功能:");
       if(!scanner.hasNextInt()){
@@ -114,6 +115,9 @@ class Q7_1 {
         case 2:
           orderQuery();
           break;
+        case 3:
+          adjDrink();
+          break;
         case 0:
           system = false;
           System.out.println("飲料點餐系統結束");
@@ -125,6 +129,204 @@ class Q7_1 {
     }
   }
   
+  private void adjDrink() {
+    System.out.println("--------------------");
+    System.out.println("3.1 您進入飲料維護介面");
+    boolean adjDrink = true;
+    while(adjDrink){
+      Scanner scanner = new Scanner(System.in);
+      System.out.println("1 : 新增飲料");
+      System.out.println("2 : 調整飲料");
+      System.out.println("3 : 移除飲料");
+      System.out.println("4 : 查詢目前的飲料");
+      System.out.println("0 : 離開");
+      System.out.print("請選擇你要的維護功能(1~3):");
+      String input = scanner.next();
+      if("0123".indexOf(input) < 0){
+        System.out.println("請選擇正確的功能");
+      }
+      if("0".equals(input)){
+        System.out.println("3.1 維護結束");
+        System.out.println("-------------------");
+        adjDrink = false;
+        break;
+      }
+      int functionFlag = Integer.parseInt(input);
+      switch(functionFlag){
+        case 1:
+          // drink.put("1", new Drink("1" , DrinkName.大正紅茶.getName() , "茶葉  原產地：印度", "茶葉" , "L" , 30 , "700", "140"));
+
+          System.out.print("請輸入飲料的名稱(離開請按0):");
+          String name = scanner.next();
+          if("0".equals(name)){
+            System.out.println("取消設定");
+            break;
+          }
+          
+          System.out.print("請輸入飲料的說明(離開請按0):");
+          String desc = scanner.next();
+          if("0".equals(desc)){
+            System.out.println("取消設定");
+            break;
+          }
+          
+          System.out.print("請輸入飲料的原料(離開請按0):");
+          String raw = scanner.next();
+          if("0".equals(raw)){
+            System.out.println("取消設定");
+            break;
+          }
+          
+          System.out.print("請輸入飲料的大小杯(離開請按0):");
+          String bigSmall = scanner.next();
+          if("0".equals(bigSmall)){
+            System.out.println("取消設定");
+            break;
+          }
+          
+          System.out.print("請輸入飲料的價格(離開請按0):");
+          String price = scanner.next();
+          if("0".equals(price)){
+            System.out.println("取消設定");
+            break;
+          }
+          
+          System.out.print("請輸入飲料的容量(離開請按0):");
+          String ml = scanner.next();
+          if("0".equals(ml)){
+            System.out.println("取消設定");
+            break;
+          }
+          
+          System.out.print("請輸入飲料的卡洛里(離開請按0):");
+          String kcal = scanner.next();
+          if("0".equals(kcal)){
+            System.out.println("取消設定");
+            break;
+          }
+          drinkInfo.put(String.valueOf(drinkInfo.size() + 1),  new Drink( String.valueOf(drinkInfo.size() + 1), name , desc, raw , "L" , Integer.parseInt(price) , ml, kcal));
+          
+          System.out.println("新增後資料的飲料清單");
+          for(String key : drinkInfo.keySet()){
+            System.out.println("編號 : " + drinkInfo.get(key).getProdNumber()+ 
+                               " 飲料 : " + drinkInfo.get(key).getName() + 
+                               " 大小 : " + drinkInfo.get(key).getBigsmall() + 
+                               " 價格 : " + drinkInfo.get(key).getPrice());
+          }
+          break;
+        case 2:
+          System.out.print("請輸入想要修改的飲料(離開請按0):");
+          for(String key : drinkInfo.keySet()){
+            System.out.println("編號 : " + drinkInfo.get(key).getProdNumber()+ 
+                               " 飲料 : " + drinkInfo.get(key).getName() + 
+                               " 大小 : " + drinkInfo.get(key).getBigsmall() + 
+                               " 價格 : " + drinkInfo.get(key).getPrice());
+          }
+          String prodNumber = scanner.next();
+          if(drinkInfo.get(prodNumber) == null){
+            System.out.print("請入的飲料編號錯誤，請重新選擇維護飲料功能重新開始");
+            break;
+          }
+          System.out.print("請輸入飲料的名稱(離開請按0):");
+          String editName = scanner.next();
+          if("0".equals(editName)){
+            System.out.println("取消設定");
+            break;
+          }
+          
+          System.out.print("請輸入飲料的說明(離開請按0):");
+          String editDesc = scanner.next();
+          if("0".equals(editDesc)){
+            System.out.println("取消設定");
+            break;
+          }
+          
+          System.out.print("請輸入飲料的原料(離開請按0):");
+          String editRaw = scanner.next();
+          if("0".equals(editRaw)){
+            System.out.println("取消設定");
+            break;
+          }
+          
+          System.out.print("請輸入飲料的大小杯(離開請按0):");
+          String editBigSmall = scanner.next();
+          if("0".equals(editBigSmall)){
+            System.out.println("取消設定");
+            break;
+          }
+          
+          System.out.print("請輸入飲料的價格(離開請按0):");
+          String editPrice = scanner.next();
+          if("0".equals(editPrice)){
+            System.out.println("取消設定");
+            break;
+          }
+          
+          System.out.print("請輸入飲料的容量(離開請按0):");
+          String editMl = scanner.next();
+          if("0".equals(editMl)){
+            System.out.println("取消設定");
+            break;
+          }
+          
+          System.out.print("請輸入飲料的卡洛里(離開請按0):");
+          String editKcal = scanner.next();
+          if("0".equals(editKcal)){
+            System.out.println("取消設定");
+            break;
+          }
+          drinkInfo.put(drinkInfo.get(prodNumber).getProdNumber() ,  new Drink( drinkInfo.get(prodNumber).getProdNumber(), editName , editDesc, editRaw , "L" , Integer.parseInt(editPrice) , editMl, editKcal));
+          for(String key : drinkInfo.keySet()){
+            System.out.println("編號 : " + drinkInfo.get(key).getProdNumber()+ 
+                               " 飲料 : " + drinkInfo.get(key).getName() + 
+                               " 大小 : " + drinkInfo.get(key).getBigsmall() + 
+                               " 價格 : " + drinkInfo.get(key).getPrice());
+          }
+          break;
+        case 3:
+          System.out.print("請輸入要刪除的飲料(離開請按0):");
+          String removeProdNumber = scanner.next();
+          if("0".equals(removeProdNumber)){
+            System.out.println("取消設定");
+            break;
+          }
+          for(String key : drinkInfo.keySet()){
+            System.out.println("編號 : " + drinkInfo.get(key).getProdNumber()+ 
+                               " 飲料 : " + drinkInfo.get(key).getName() + 
+                               " 大小 : " + drinkInfo.get(key).getBigsmall() + 
+                               " 價格 : " + drinkInfo.get(key).getPrice());
+          }
+          if(drinkInfo.get(removeProdNumber) == null){
+            System.out.print("請入的飲料編號錯誤，請重新選擇維護飲料功能重新開始");
+            break;
+          }
+          
+          drinkInfo.remove(removeProdNumber);
+          
+          System.out.println("移除資料的飲料清單");
+          for(String key : drinkInfo.keySet()){
+            System.out.println("編號 : " + drinkInfo.get(key).getProdNumber()+ 
+                               " 飲料 : " + drinkInfo.get(key).getName() + 
+                               " 大小 : " + drinkInfo.get(key).getBigsmall() + 
+                               " 價格 : " + drinkInfo.get(key).getPrice());
+          }
+          break;
+        case 4:
+          for(String key : drinkInfo.keySet()){
+            System.out.println("編號 : " + drinkInfo.get(key).getProdNumber()+ 
+                               " 飲料 : " + drinkInfo.get(key).getName() + 
+                               " 大小 : " + drinkInfo.get(key).getBigsmall() + 
+                               " 價格 : " + drinkInfo.get(key).getPrice());
+          }
+          break;
+        case 0:
+          System.out.println("飲料維護結束");
+          break;
+      }
+    }
+  }
+
+
   private void orderDrink(){
     System.out.println("--------------------");
     System.out.println("1.1 您進入點餐介面");
