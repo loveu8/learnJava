@@ -1,7 +1,14 @@
 package Class8;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Homework8{
-  
+  public static void main(String[] args) {
+//    new Q8_1().exec();
+    new Q8_2().exec();
+  }
 }
 
 
@@ -13,7 +20,24 @@ public class Homework8{
  * </pre>
  */
 class Q8_1{
+  public void exec(){
+    one();
+    two();
+  }
+  public void one(){
+    try{
+      int i = 1;
+      i = i/0;
+    } catch(Exception e){
+      e.printStackTrace();
+      System.out.println("不可以除以0");
+    }
+  }
   
+  public void two() {
+    NumberFormat formatter = new DecimalFormat("#0.000");
+    System.out.println("hi = " + formatter.format(1 / 3.0));
+  }
 }
 
 /**
@@ -34,5 +58,65 @@ class Q8_1{
  * </pre>
  */
 class Q8_2{
+  public void exec(){
+    Animal tortoise = new Animal("烏龜"  , 1 , 350 , 550 ,30);
+    tortoise.start();
+  }
   
+  class Animal extends Thread{
+    private String name;
+    private long speed;
+    private long avgSpeed;
+    private int sleepMinTime;
+    private int sleepMaxTime;
+    private long track;
+    private long runTotalTime;
+    private long relaxTotalTime;
+    private long totalTime;
+    public Animal(String name , long speed , int sleepMinTime , int sleepMaxTime , long track){
+      this.name = name;
+      this.speed = speed;
+      this.avgSpeed = (long) 1/speed;
+      this.sleepMinTime = sleepMinTime;
+      this.sleepMaxTime = sleepMaxTime;
+      this.track = track;
+    }
+    public void run(){
+      try{
+        long lastTrack = this.track;
+        long sleepTime = 0;
+        while (lastTrack > 0){
+          boolean isSleep = true;
+          // 因為速度是持續跑，所以要區分前進1m花了多少秒
+          // 假設速度 3 m/s , 每前進1 m 花費0.333秒
+          for(int index = 0 ; index < speed ; index++){
+            lastTrack = lastTrack - 1;
+            runTotalTime = runTotalTime + avgSpeed;
+            System.out.println("runTotalTime : " + runTotalTime);
+            if(lastTrack <= 0){
+              // 跑完了
+              isSleep = false;
+              break;
+            }
+          }
+          if(isSleep){
+            sleepTime = ThreadLocalRandom.current().nextInt(sleepMinTime,sleepMaxTime);
+            relaxTotalTime = relaxTotalTime + sleepTime;
+            System.out.println("relaxTotalTime : " + relaxTotalTime + " , sleepTime" + sleepTime);
+            Thread.sleep(sleepTime);
+            
+            System.out.println(name+" , 平均每一公尺:"+ avgSpeed +" s , 目前跑了 " + (track - lastTrack) + "m" + 
+                               " , 時間過了:" + ((runTotalTime+relaxTotalTime)/1000.0) + "s" + " , 休息:"+ (sleepTime /1000.0) +"s");
+          }
+        }
+        totalTime = runTotalTime + relaxTotalTime;
+        System.out.println("name:"+name+",跑完了 ,  總共花了:" + (totalTime / 1000.0) + "s");
+      } catch(Exception e){
+        e.printStackTrace();
+      }
+    }
+    
+  }
 }
+
+
