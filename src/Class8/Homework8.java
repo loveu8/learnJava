@@ -59,31 +59,35 @@ class Q8_1{
  */
 class Q8_2{
   public void exec(){
-    Animal tortoise = new Animal("烏龜"  , 1 , 350 , 550 ,30);
+    Animal tortoise = new Animal("烏龜"  , 1.0 , 350 , 550 ,10);
+    Animal pig = new Animal("小豬"  , 2.0 , 350 , 3500 ,10);
+    Animal rabbit = new Animal("兔子"  , 3.0 , 2600 , 4000 ,10);
     tortoise.start();
+    pig.start();
+    rabbit.start();
   }
   
   class Animal extends Thread{
     private String name;
-    private long speed;
-    private long avgSpeed;
+    private double speed;
+    private double avgSpeed;
     private int sleepMinTime;
     private int sleepMaxTime;
-    private long track;
-    private long runTotalTime;
-    private long relaxTotalTime;
-    private long totalTime;
-    public Animal(String name , long speed , int sleepMinTime , int sleepMaxTime , long track){
+    private double track;
+    private double runTotalTime;
+    private double relaxTotalTime;
+    private double totalTime;
+    public Animal(String name , double speed , int sleepMinTime , int sleepMaxTime , long track){
       this.name = name;
       this.speed = speed;
-      this.avgSpeed = (long) 1/speed;
+      this.avgSpeed = 1/speed;
       this.sleepMinTime = sleepMinTime;
       this.sleepMaxTime = sleepMaxTime;
-      this.track = track;
+      this.track = track + 1;
     }
     public void run(){
       try{
-        long lastTrack = this.track;
+        double lastTrack = this.track;
         long sleepTime = 0;
         while (lastTrack > 0){
           boolean isSleep = true;
@@ -91,8 +95,7 @@ class Q8_2{
           // 假設速度 3 m/s , 每前進1 m 花費0.333秒
           for(int index = 0 ; index < speed ; index++){
             lastTrack = lastTrack - 1;
-            runTotalTime = runTotalTime + avgSpeed;
-            System.out.println("runTotalTime : " + runTotalTime);
+            runTotalTime = runTotalTime + avgSpeed * 1000;
             if(lastTrack <= 0){
               // 跑完了
               isSleep = false;
@@ -102,15 +105,14 @@ class Q8_2{
           if(isSleep){
             sleepTime = ThreadLocalRandom.current().nextInt(sleepMinTime,sleepMaxTime);
             relaxTotalTime = relaxTotalTime + sleepTime;
-            System.out.println("relaxTotalTime : " + relaxTotalTime + " , sleepTime" + sleepTime);
-            Thread.sleep(sleepTime);
             
-            System.out.println(name+" , 平均每一公尺:"+ avgSpeed +" s , 目前跑了 " + (track - lastTrack) + "m" + 
-                               " , 時間過了:" + ((runTotalTime+relaxTotalTime)/1000.0) + "s" + " , 休息:"+ (sleepTime /1000.0) +"s");
+            System.out.println(name+" , 平均每公尺需要 : "+ avgSpeed +"s , 目前跑了 " + (track - lastTrack) + "m" + 
+                                    " , 計時:" + ((runTotalTime+relaxTotalTime)/1000.0) + "s" + 
+                                    " , 休息:"+ (sleepTime /1000.0) +"s");
           }
         }
-        totalTime = runTotalTime + relaxTotalTime;
-        System.out.println("name:"+name+",跑完了 ,  總共花了:" + (totalTime / 1000.0) + "s");
+        totalTime = runTotalTime + relaxTotalTime ;
+        System.out.println(name+"跑完了!! ,  總共花了:" + (totalTime / 1000.0) + "s");
       } catch(Exception e){
         e.printStackTrace();
       }
