@@ -66,7 +66,7 @@ class Q8_2{
     List<RaceResult> raceResults = new ArrayList<RaceResult>();
     List<Race> races = new ArrayList<Race>();
     List<Thread> threads = new ArrayList<Thread>();
-    int timer = 10000;
+    int timer = 1000;
     for(int index = 0 ; index < timer ;index ++){
       raceResults.add(new RaceResult());
     }
@@ -87,18 +87,15 @@ class Q8_2{
     boolean stop = false;
     while(!stop){
       for(int index = 0 ; index < threads.size() ; index++){
-        if(races.get(index).isStop()){
+        if(races.get(index).isStopped() && 
+           !races.get(index).isFinish() && 
+           !threads.get(index).isInterrupted()){
+          races.get(index).setFinish(true);
           threads.get(index).interrupt();
           finishRaces = finishRaces + 1;
-        } else {
-          try{
-            Thread.sleep(1000);
-          } catch (Exception e){
-            e.printStackTrace();
-          }
         }
       }
-      if(finishRaces > allRaces){
+      if(finishRaces == allRaces){
         stop = true;
       }
     }
@@ -109,11 +106,8 @@ class Q8_2{
     for(int index = 0 ; index < animals.size() ; index ++){
       summary.put(animals.get(index).getName() , 0);
     }
-    int count =  0 ;
     for(RaceResult raceResult : raceResults){
       for(int index = 0 ; index < animals.size() ; index ++){
-        count ++ ;
-        System.out.println("count = " + count + " , index = " + index  + " , "+ raceResult.getWinner());
         if(raceResult.getWinner().equals(animals.get(index).getName())){
           summary.put(animals.get(index).getName() , summary.get(animals.get(index).getName()) + 1);
         }
@@ -144,10 +138,12 @@ class RaceResult {
 class Race implements Runnable {
 
   private RaceResult raceResult;
-  private volatile boolean isStop;
+  private volatile boolean stopped;
+  private volatile boolean isFinish;
   public Race(RaceResult raceResult){
     this.raceResult = raceResult;
-    this.isStop = false;
+    this.stopped = false;
+    this.isFinish = false;
   }
   @Override
   public void run() {
@@ -172,18 +168,22 @@ class Race implements Runnable {
     boolean stop = false;
     while(!stop){
       for(int index = 0 ; index < threads.size() ; index++){
-        if(animalRuns.get(index).isStop()){
+        if(animalRuns.get(index).isStop() && 
+           !animalRuns.get(index).isFinish() && 
+           !threads.get(index).isInterrupted() ){
+          animalRuns.get(index).setFinish(true);
           threads.get(index).interrupt();
           finishRacer = finishRacer + 1;
         } else {
-          try{
-            Thread.sleep(1000);
-          } catch (Exception e){
+          try {
+            Thread.sleep(100);
+          } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
           }
         }
       }
-      if(finishRacer > allRacer){
+      if(finishRacer == allRacer){
         stop = true;
       }
     }
@@ -204,14 +204,21 @@ class Race implements Runnable {
         }
       }
     }
-    System.out.println("贏家:"+raceResult.getWinner());
-    this.isStop = true;
-    Thread.currentThread().interrupt();
+    stopped();
+    System.out.println("贏家:"+raceResult.getWinner());  
   }
-  public boolean isStop(){
-    return isStop;
+  private void stopped(){
+    this.stopped = true;
   }
-  
+  public boolean isStopped(){
+    return stopped;
+  }
+  public boolean isFinish() {
+    return isFinish;
+  }
+  public void setFinish(boolean isFinish) {
+    this.isFinish = isFinish;
+  }
 }
 
 class Animals {
@@ -302,51 +309,57 @@ class Animal {
 
 class AnimalRun implements Runnable{
   private Animal animal;
-  private volatile boolean stopped = false;
+  private volatile boolean stopped;
+  private volatile boolean isFinish;
   public AnimalRun(Animal animal){
     this.animal = animal;
+    this.stopped = false;
+    this.isFinish = false;
   }
   public void run(){
     try{
-      while(!stopped){
-        double lastTrack = this.animal.getTrack();
-        long sleepTime = 0;
-        while (lastTrack > 0){
-          boolean isSleep = true;
-          // 因為速度是持續跑，所以要區分前進1m花了多少秒
-          // 假設速度 3 m/s , 每前進1 m 花費0.333秒
-          for(int index = 0 ; index < this.animal.getSpeed() ; index++){
-            lastTrack = lastTrack - 1;
-            this.animal.setRunTotalTime(this.animal.getRunTotalTime() + this.animal.getAvgSpeed() * 1000);
-            if(lastTrack <= 0){
-              // 跑完了
-              isSleep = false;
-              break;
-            }
-          }
-          if(isSleep){
-            sleepTime = ThreadLocalRandom.current().nextInt(this.animal.getSleepMinTime(),this.animal.getSleepMaxTime());
-            this.animal.setRelaxTotalTime(this.animal.getRelaxTotalTime() + sleepTime);
-            System.out.println(this.animal.getName()+" , 平均每公尺需要 : "+ this.animal.getAvgSpeed() +"s , 目前跑了 " + 
-                                    (this.animal.getTrack() - lastTrack) + "m" + 
-                                    " , 計時:" + ((this.animal.getRunTotalTime()+this.animal.getRelaxTotalTime())/1000.0) + "s" + 
-                                    " , 休息:"+ (sleepTime /1000.0) +"s");
+      double lastTrack = this.animal.getTrack();
+      long sleepTime = 0;
+      while (lastTrack > 0){
+        boolean isSleep = true;
+        // 因為速度是持續跑，所以要區分前進1m花了多少秒
+        // 假設速度 3 m/s , 每前進1 m 花費0.333秒
+        for(int index = 0 ; index < this.animal.getSpeed() ; index++){
+          lastTrack = lastTrack - 1;
+          this.animal.setRunTotalTime(this.animal.getRunTotalTime() + this.animal.getAvgSpeed() * 1000);
+          if(lastTrack <= 0){
+            // 跑完了
+            isSleep = false;
+            break;
           }
         }
-        this.animal.setTotalTime(this.animal.getRunTotalTime() + this.animal.getRelaxTotalTime()) ;
-        System.out.println(this.animal.getName() + "跑完了!! ,  總共花了:" + (this.animal.getTotalTime() / 1000.0) + "s");
-        stop();
-        Thread.currentThread().interrupt();
+        if(isSleep){
+          sleepTime = ThreadLocalRandom.current().nextInt(this.animal.getSleepMinTime(),this.animal.getSleepMaxTime());
+          this.animal.setRelaxTotalTime(this.animal.getRelaxTotalTime() + sleepTime);
+          System.out.println(this.animal.getName()+" , 平均每公尺需要 : "+ this.animal.getAvgSpeed() +"s , 目前跑了 " + 
+                                  (this.animal.getTrack() - lastTrack) + "m" + 
+                                  " , 計時:" + ((this.animal.getRunTotalTime()+this.animal.getRelaxTotalTime())/1000.0) + "s" + 
+                                  " , 休息:"+ (sleepTime /1000.0) +"s");
+        }
       }
+      this.animal.setTotalTime(this.animal.getRunTotalTime() + this.animal.getRelaxTotalTime()) ;
+      System.out.println(this.animal.getName() + "跑完了!! ,  總共花了:" + (this.animal.getTotalTime() / 1000.0) + "s");
+      stop();
     } catch(Exception e){
       e.printStackTrace();
     }
   }
-  public void stop(){
+  private void stop(){
     this.stopped = true;
   }
   public boolean isStop(){
     return this.stopped;
+  }
+  public boolean isFinish() {
+    return isFinish;
+  }
+  public void setFinish(boolean isFinish) {
+    this.isFinish = isFinish;
   }
 }
 
