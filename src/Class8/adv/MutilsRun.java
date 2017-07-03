@@ -9,20 +9,19 @@ public class MutilsRun {
   public static void main(String[] args) throws InterruptedException {
     List<Thread> threads = new LinkedList<Thread>();
     List<OutSideTwo> evens = new LinkedList<OutSideTwo>();
-    for (int index = 0; index < 3; index++) {
+    for (int index = 0; index < 1000; index++) {
       evens.add(new OutSideTwo());
     }
-    for (int index = 0; index < 3; index++) {
+    for (int index = 0; index < 1000; index++) {
       threads.add(new Thread(evens.get(index)));
     }
-    for (int index = 0; index < 3; index++) {
+    for (int index = 0; index < 1000; index++) {
       threads.get(index).start();
-      Thread.sleep(100);
     }
     int count = 0;
     boolean isAllFinish = false;
     while (!isAllFinish) {
-      for (int index = 0; index < 3; index++) {
+      for (int index = 0; index < 1000; index++) {
         if (!evens.get(index).getIsFinish() && !threads.get(index).isInterrupted()) {
           evens.get(index).setIsFinish(true);
           threads.get(index).interrupt();
@@ -30,7 +29,7 @@ public class MutilsRun {
         }
       }
       System.out.println("count : " + count);
-      if (count == 3) {
+      if (count == threads.size()) {
         isAllFinish = true;
       }
     }

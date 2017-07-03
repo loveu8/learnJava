@@ -6,12 +6,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Homework8{
+public class Homework8 {
   public static void main(String[] args) {
-//    new Q8_1().exec();
-    new Q8_2().exec();
+    // new Q8_1().exec();
+    // new Q8_2().exec();
+    new Q8_3().exec();
   }
 }
 
@@ -23,26 +27,28 @@ public class Homework8{
  *   捕捉類似1/3的錯誤，提示會無限循環小數，並只格式化到小數點第三位
  * </pre>
  */
-class Q8_1{
-  public void exec(){
+class Q8_1 {
+  public void exec() {
     one();
     two();
   }
-  public void one(){
-    try{
+
+  public void one() {
+    try {
       int i = 1;
-      i = i/0;
-    } catch(Exception e){
+      i = i / 0;
+    } catch (Exception e) {
       e.printStackTrace();
       System.out.println("不可以除以0");
     }
   }
-  
+
   public void two() {
     NumberFormat formatter = new DecimalFormat("#0.000");
     System.out.println("hi = " + formatter.format(1 / 3.0));
   }
 }
+
 
 /**
  * <pre>
@@ -61,68 +67,116 @@ class Q8_1{
  *        Thread.Sleep(1500)，單位是千毫秒
  * </pre>
  */
-class Q8_2{
-  public void exec(){
+class Q8_2 {
+  public void exec() {
     List<RaceResult> raceResults = new ArrayList<RaceResult>();
     List<Race> races = new ArrayList<Race>();
     List<Thread> threads = new ArrayList<Thread>();
     int timer = 1000;
-    for(int index = 0 ; index < timer ;index ++){
+    for (int index = 0; index < timer; index++) {
       raceResults.add(new RaceResult());
     }
-    for(int index = 0 ; index < timer ;index ++){
+    for (int index = 0; index < timer; index++) {
       races.add(new Race(raceResults.get(index)));
     }
-    for(int index = 0 ; index < races.size() ;index ++){
+    for (int index = 0; index < races.size(); index++) {
       threads.add(new Thread(races.get(index)));
     }
     // 比賽開始
-    for(int index = 0 ; index < threads.size() ;index ++){
+    for (int index = 0; index < threads.size(); index++) {
       threads.get(index).start();
     }
-    
+
     // 等待全部Thread 結束
     int allRaces = timer;
     int finishRaces = 0;
     boolean stop = false;
-    while(!stop){
-      for(int index = 0 ; index < threads.size() ; index++){
-        if(races.get(index).isStopped() && 
-           !races.get(index).isFinish() && 
-           !threads.get(index).isInterrupted()){
+    while (!stop) {
+      for (int index = 0; index < threads.size(); index++) {
+        if (races.get(index).isStopped() && !races.get(index).isFinish()
+            && !threads.get(index).isInterrupted()) {
           races.get(index).setFinish(true);
           threads.get(index).interrupt();
           finishRaces = finishRaces + 1;
         }
       }
-      if(finishRaces == allRaces){
+      if (finishRaces == allRaces) {
         stop = true;
       }
     }
-    
+
     // 設定性名
     List<Animal> animals = new Animals().init();
-    Map<String , Integer> summary= new HashMap<String , Integer>();
-    for(int index = 0 ; index < animals.size() ; index ++){
-      summary.put(animals.get(index).getName() , 0);
+    Map<String, Integer> summary = new HashMap<String, Integer>();
+    for (int index = 0; index < animals.size(); index++) {
+      summary.put(animals.get(index).getName(), 0);
     }
-    for(RaceResult raceResult : raceResults){
-      for(int index = 0 ; index < animals.size() ; index ++){
-        if(raceResult.getWinner().equals(animals.get(index).getName())){
-          summary.put(animals.get(index).getName() , summary.get(animals.get(index).getName()) + 1);
+    for (RaceResult raceResult : raceResults) {
+      for (int index = 0; index < animals.size(); index++) {
+        if (raceResult.getWinner().equals(animals.get(index).getName())) {
+          summary.put(animals.get(index).getName(), summary.get(animals.get(index).getName()) + 1);
         }
       }
     }
-    for(String name :summary.keySet()){
+    for (String name : summary.keySet()) {
       System.out.println(name + " , 贏了 : " + summary.get(name));
     }
-    
+
   }
-  
+
 }
 
+
+class Q8_3 {
+  public void exec() {
+
+    List<RaceResult> raceResults = new ArrayList<RaceResult>();
+    List<Race> races = new ArrayList<Race>();
+
+    int timer = 10;
+    for (int index = 0; index < timer; index++) {
+      raceResults.add(new RaceResult());
+    }
+    for (int index = 0; index < timer; index++) {
+      races.add(new Race(raceResults.get(index)));
+    }
+
+    ExecutorService executor = Executors.newFixedThreadPool(50);
+    List<Callable<Object>> todo = new ArrayList<Callable<Object>>(raceResults.size());
+    for (int index = 0; index < timer; index++) {
+      todo.add(Executors.callable(races.get(index)));
+    }
+    try {
+      executor.invokeAll(todo);
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } finally {
+      executor.shutdownNow();
+    }
+
+    // 設定性名
+    List<Animal> animals = new Animals().init();
+    Map<String, Integer> summary = new HashMap<String, Integer>();
+    for (int index = 0; index < animals.size(); index++) {
+      summary.put(animals.get(index).getName(), 0);
+    }
+    for (RaceResult raceResult : raceResults) {
+      for (int index = 0; index < animals.size(); index++) {
+        if (raceResult.getWinner().equals(animals.get(index).getName())) {
+          summary.put(animals.get(index).getName(), summary.get(animals.get(index).getName()) + 1);
+        }
+      }
+    }
+    for (String name : summary.keySet()) {
+      System.out.println(name + " , 贏了 : " + summary.get(name));
+    }
+  }
+}
+
+
 class RaceResult {
-  
+
   private String winner;
 
   public String getWinner() {
@@ -132,45 +186,47 @@ class RaceResult {
   public void setWinner(String winner) {
     this.winner = winner;
   }
-  
+
 }
+
 
 class Race implements Runnable {
 
   private RaceResult raceResult;
   private volatile boolean stopped;
   private volatile boolean isFinish;
-  public Race(RaceResult raceResult){
+
+  public Race(RaceResult raceResult) {
     this.raceResult = raceResult;
     this.stopped = false;
     this.isFinish = false;
   }
+
   @Override
   public void run() {
     // 準備賽跑的動物們
     List<Animal> animals = new Animals().init();
     List<AnimalRun> animalRuns = new ArrayList<AnimalRun>();
     List<Thread> threads = new ArrayList<Thread>();
-    for(int index = 0 ; index < animals.size() ;index ++){
+    for (int index = 0; index < animals.size(); index++) {
       animalRuns.add(new AnimalRun(animals.get(index)));
     }
-    for(int index = 0 ; index < animals.size() ;index ++){
+    for (int index = 0; index < animals.size(); index++) {
       animalRuns.add(new AnimalRun(animals.get(index)));
       threads.add(new Thread(animalRuns.get(index)));
     }
     // 比賽結束開始
-    for(int index = 0 ; index < animals.size() ;index ++){
+    for (int index = 0; index < animals.size(); index++) {
       threads.get(index).start();
     }
     // 等待全部Thread 結束
     int allRacer = animals.size();
     int finishRacer = 0;
     boolean stop = false;
-    while(!stop){
-      for(int index = 0 ; index < threads.size() ; index++){
-        if(animalRuns.get(index).isStop() && 
-           !animalRuns.get(index).isFinish() && 
-           !threads.get(index).isInterrupted() ){
+    while (!stop) {
+      for (int index = 0; index < threads.size(); index++) {
+        if (animalRuns.get(index).isStop() && !animalRuns.get(index).isFinish()
+            && !threads.get(index).isInterrupted()) {
           animalRuns.get(index).setFinish(true);
           threads.get(index).interrupt();
           finishRacer = finishRacer + 1;
@@ -183,53 +239,59 @@ class Race implements Runnable {
           }
         }
       }
-      if(finishRacer == allRacer){
+      if (finishRacer == allRacer) {
         stop = true;
       }
     }
-    
+
     // 印出最後的比賽結果
-    for(int index = 0 ; index < animals.size() ; index ++){
-      System.out.println(animals.get(index).getName() + 
-                         " , runTotalTime : "+animals.get(index).getRunTotalTime() + 
-                         " , relaxTotalTime : "+animals.get(index).getRelaxTotalTime() + 
-                         " , totalTime : "+animals.get(index).getTotalTime());
+    for (int index = 0; index < animals.size(); index++) {
+      System.out.println(
+          animals.get(index).getName() + " , runTotalTime : " + animals.get(index).getRunTotalTime()
+              + " , relaxTotalTime : " + animals.get(index).getRelaxTotalTime() + " , totalTime : "
+              + animals.get(index).getTotalTime());
     }
-    
+
     // 找出最後贏家
-    for(int index = 0 ; index < animals.size() ; index ++){
-      for(int tag = index ; tag < animals.size() ; tag ++){
-        if(animals.get(tag).getTotalTime() < animals.get(index).getTotalTime()){
+    for (int index = 0; index < animals.size(); index++) {
+      for (int tag = index; tag < animals.size(); tag++) {
+        if (animals.get(tag).getTotalTime() < animals.get(index).getTotalTime()) {
           raceResult.setWinner(animals.get(tag).getName());
         }
       }
     }
     stopped();
-    System.out.println("贏家:"+raceResult.getWinner());  
+    System.out.println("贏家:" + raceResult.getWinner());
   }
-  private void stopped(){
+
+  private void stopped() {
     this.stopped = true;
   }
-  public boolean isStopped(){
+
+  public boolean isStopped() {
     return stopped;
   }
+
   public boolean isFinish() {
     return isFinish;
   }
+
   public void setFinish(boolean isFinish) {
     this.isFinish = isFinish;
   }
 }
 
+
 class Animals {
-  public List<Animal> init(){
+  public List<Animal> init() {
     List<Animal> animals = new ArrayList<Animal>();
-    animals.add(new Animal("烏龜"  , 1.0 , 350 , 550 ,10));
-    animals.add(new Animal("小豬"  , 2.0 , 350 , 3500 ,10));
-    animals.add(new Animal("兔子"  , 3.0 , 2600 , 4000 ,10));
+    animals.add(new Animal("烏龜", 1.0, 350, 550, 10));
+    animals.add(new Animal("小豬", 2.0, 350, 3500, 10));
+    animals.add(new Animal("兔子", 3.0, 2600, 4000, 10));
     return animals;
   }
 }
+
 
 class Animal {
   private String name;
@@ -241,123 +303,152 @@ class Animal {
   private double runTotalTime;
   private double relaxTotalTime;
   private double totalTime;
-  public Animal(String name , double speed , int sleepMinTime , int sleepMaxTime , long track){
+
+  public Animal(String name, double speed, int sleepMinTime, int sleepMaxTime, long track) {
     this.name = name;
     this.speed = speed;
-    this.avgSpeed = 1/speed;
+    this.avgSpeed = 1 / speed;
     this.sleepMinTime = sleepMinTime;
     this.sleepMaxTime = sleepMaxTime;
     this.track = track + 1;
     this.totalTime = 0;
   }
+
   public String getName() {
     return name;
   }
+
   public void setName(String name) {
     this.name = name;
   }
+
   public double getSpeed() {
     return speed;
   }
+
   public void setSpeed(double speed) {
     this.speed = speed;
   }
+
   public double getAvgSpeed() {
     return avgSpeed;
   }
+
   public void setAvgSpeed(double avgSpeed) {
     this.avgSpeed = avgSpeed;
   }
+
   public int getSleepMinTime() {
     return sleepMinTime;
   }
+
   public void setSleepMinTime(int sleepMinTime) {
     this.sleepMinTime = sleepMinTime;
   }
+
   public int getSleepMaxTime() {
     return sleepMaxTime;
   }
+
   public void setSleepMaxTime(int sleepMaxTime) {
     this.sleepMaxTime = sleepMaxTime;
   }
+
   public double getTrack() {
     return track;
   }
+
   public void setTrack(double track) {
     this.track = track;
   }
+
   public double getRunTotalTime() {
     return runTotalTime;
   }
+
   public void setRunTotalTime(double runTotalTime) {
     this.runTotalTime = runTotalTime;
   }
+
   public double getRelaxTotalTime() {
     return relaxTotalTime;
   }
+
   public void setRelaxTotalTime(double relaxTotalTime) {
     this.relaxTotalTime = relaxTotalTime;
   }
+
   public double getTotalTime() {
     return totalTime;
   }
+
   public void setTotalTime(double totalTime) {
     this.totalTime = totalTime;
   }
-  
+
 }
 
-class AnimalRun implements Runnable{
+
+class AnimalRun implements Runnable {
   private Animal animal;
   private volatile boolean stopped;
   private volatile boolean isFinish;
-  public AnimalRun(Animal animal){
+
+  public AnimalRun(Animal animal) {
     this.animal = animal;
     this.stopped = false;
     this.isFinish = false;
   }
-  public void run(){
-    try{
+
+  public void run() {
+    try {
       double lastTrack = this.animal.getTrack();
       long sleepTime = 0;
-      while (lastTrack > 0){
+      while (lastTrack > 0) {
         boolean isSleep = true;
         // 因為速度是持續跑，所以要區分前進1m花了多少秒
         // 假設速度 3 m/s , 每前進1 m 花費0.333秒
-        for(int index = 0 ; index < this.animal.getSpeed() ; index++){
+        for (int index = 0; index < this.animal.getSpeed(); index++) {
           lastTrack = lastTrack - 1;
-          this.animal.setRunTotalTime(this.animal.getRunTotalTime() + this.animal.getAvgSpeed() * 1000);
-          if(lastTrack <= 0){
+          this.animal
+              .setRunTotalTime(this.animal.getRunTotalTime() + this.animal.getAvgSpeed() * 1000);
+          if (lastTrack <= 0) {
             // 跑完了
             isSleep = false;
             break;
           }
         }
-        if(isSleep){
-          sleepTime = ThreadLocalRandom.current().nextInt(this.animal.getSleepMinTime(),this.animal.getSleepMaxTime());
+        if (isSleep) {
+          sleepTime = ThreadLocalRandom.current().nextInt(this.animal.getSleepMinTime(),
+              this.animal.getSleepMaxTime());
           this.animal.setRelaxTotalTime(this.animal.getRelaxTotalTime() + sleepTime);
-          System.out.println(this.animal.getName()+" , 平均每公尺需要 : "+ this.animal.getAvgSpeed() +"s , 目前跑了 " + 
-                                  (this.animal.getTrack() - lastTrack) + "m" + 
-                                  " , 計時:" + ((this.animal.getRunTotalTime()+this.animal.getRelaxTotalTime())/1000.0) + "s" + 
-                                  " , 休息:"+ (sleepTime /1000.0) +"s");
+          System.out.println(this.animal.getName() + " , 平均每公尺需要 : " + this.animal.getAvgSpeed()
+              + "s , 目前跑了 " + (this.animal.getTrack() - lastTrack) + "m" + " , 計時:"
+              + ((this.animal.getRunTotalTime() + this.animal.getRelaxTotalTime()) / 1000.0) + "s"
+              + " , 休息:" + (sleepTime / 1000.0) + "s");
         }
       }
-      this.animal.setTotalTime(this.animal.getRunTotalTime() + this.animal.getRelaxTotalTime()) ;
-      System.out.println(this.animal.getName() + "跑完了!! ,  總共花了:" + (this.animal.getTotalTime() / 1000.0) + "s");
+      this.animal.setTotalTime(this.animal.getRunTotalTime() + this.animal.getRelaxTotalTime());
+      System.out.println(
+          this.animal.getName() + "跑完了!! ,  總共花了:" + (this.animal.getTotalTime() / 1000.0) + "s");
       stop();
-    } catch(Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
-  private void stop(){
+
+  private void stop() {
     this.stopped = true;
   }
-  public boolean isStop(){
+
+  public boolean isStop() {
     return this.stopped;
   }
+
   public boolean isFinish() {
     return isFinish;
   }
+
   public void setFinish(boolean isFinish) {
     this.isFinish = isFinish;
   }
