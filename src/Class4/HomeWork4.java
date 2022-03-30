@@ -158,10 +158,10 @@ class Q4_2 {
  * <pre>
  * 
  * 使用  array
- * 印出 2007~2017 的年月日  
+ * 印出 2010~2025 的年月日  
  * 
  * ex :
- * 2017
+ * 2025
  * 1月
  * 1,2,3,4,....,31
  * 2月 
@@ -191,7 +191,7 @@ class Q4_3 {
   // index = 0 , 1900 ...
   // index = 1 , 1901 ...
   // ...
-  // index = ? , 2017 ...
+  // index = ? , 2025 ...
   private int[] initYears(int startYear , int endYear){
     int size = endYear - startYear + 1 ;
     int[] years = new int[size];
