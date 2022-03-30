@@ -138,7 +138,7 @@ class Q3_2{
 
 
 /** 
-  3-3. 請使用for迴圈，先用一個整數一維陣列儲存1900~2017年後，判斷那幾年是閏年? 
+  3-3. 請使用for迴圈，先用一個整數一維陣列儲存1900~2099年後，判斷那幾年是閏年? 
  */
 class Q3_3 {
   
@@ -155,7 +155,7 @@ class Q3_3 {
   // index = 0 , 1900 ...
   // index = 1 , 1901 ...
   // ...
-  // index = ? , 2017 ...
+  // index = ? , 2099 ...
   public int[] initailYears(int startYear , int endYear){
     int size = endYear - startYear + 1 ;
     int[] years = new int[size];
